@@ -1,0 +1,271 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Casos Universitarios & Exámenes Clínicos | Vet & Zoo Lab</title>
+  <meta name="description" content="Simulador de casos clínicos universitarios y exámenes reales en bovinos, equinos y ovinos con anamnesis profunda, laboratorio y rúbrica de calificación.">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🎓</text></svg>">
+
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600;700&family=Inter:wght@400;500;600;700;800&family=Space+Grotesk:wght@600;700;800&display=swap" rel="stylesheet">
+
+  <!-- Tailwind CSS -->
+  <script src="https://cdn.tailwindcss.com"></script>
+
+  <!-- Custom Styles -->
+  <link rel="stylesheet" href="css/styles.css">
+</head>
+
+<body>
+  <!-- Contenedor Toast -->
+  <div id="toast" class="fixed right-4 top-4 z-50 max-w-sm space-y-2"></div>
+
+  <!-- Barra de Navegación Global -->
+  <header class="max-w-7xl mx-auto px-4 pt-4" id="sharedNavContainer"></header>
+
+  <!-- Contenedor Principal de Casos Clínicos -->
+  <main class="max-w-7xl mx-auto px-4 pt-4 pb-16 space-y-6">
+    <!-- Selector de Casos -->
+    <div class="glass hud-card rounded-2xl p-4 border border-amber-500/30 flex flex-wrap items-center justify-between gap-3">
+      <div class="flex items-center gap-2.5">
+        <span class="text-2xl">🎓</span>
+        <div>
+          <h2 class="display text-base font-bold text-white m-0">Banco de Casos Clínicos & Misiones Universitarias</h2>
+          <p class="text-xs text-[var(--muted)] m-0">Selecciona el caso a estudiar para iniciar la simulación de examen clínico.</p>
+        </div>
+      </div>
+
+      <div class="flex flex-wrap gap-1.5" id="caseSelectorButtons">
+        <!-- Renderizado dinámico -->
+      </div>
+    </div>
+
+    <!-- Contenedor del Caso Activo -->
+    <div id="caseActiveModuleContainer"></div>
+  </main>
+
+  <!-- Footer Científico -->
+  <footer class="max-w-7xl mx-auto px-4 pb-8 text-center text-xs text-[var(--muted)] border-t border-[var(--border)] pt-4">
+    🎓 VET & ZOO LAB — Simulación de Exámenes Clínicos & Evaluación Basada en Competencias.
+  </footer>
+
+  <!-- Script Bootstrap -->
+  <script type="module">
+    import { SharedNav } from "./js/ui/SharedNav.js";
+    import { caseEngine, UNIVERSITY_CLINICAL_CASES } from "./js/modules/CaseEngine.js";
+    import { store } from "./js/core/Store.js";
+
+    function renderCasesPage() {
+      const btnContainer = document.getElementById("caseSelectorButtons");
+      const activeContainer = document.getElementById("caseActiveModuleContainer");
+      if (!btnContainer || !activeContainer) return;
+
+      const c = caseEngine.activeCase;
+
+      // Botones de casos
+      btnContainer.innerHTML = UNIVERSITY_CLINICAL_CASES.map(item => `
+        <button class="btn-case-pick btn px-3 py-1.5 rounded-xl text-xs font-semibold border ${item.id === c.id ? 'bg-amber-950/80 text-amber-300 border-amber-500/50 shadow' : 'bg-black/40 text-gray-400 border-white/5 hover:text-white'}" data-case-id="${item.id}">
+          ${item.code.split("—")[0].trim()}
+        </button>
+      `).join("");
+
+      // Renderizado del caso
+      activeContainer.innerHTML = `
+        <div class="glass hud-card rounded-3xl p-6 sm:p-8 border border-amber-500/30 space-y-6">
+          <!-- Encabezado del Caso -->
+          <div class="flex flex-wrap justify-between items-start gap-3 border-b border-[var(--border)] pb-4">
+            <div>
+              <div class="flex items-center gap-2">
+                <span class="px-2.5 py-0.5 rounded-full text-xs font-bold bg-amber-500/20 text-amber-300 border border-amber-500/40">
+                  ${c.difficulty}
+                </span>
+                <span class="text-xs text-[var(--muted)] mono">${c.category}</span>
+              </div>
+              <h3 class="display text-xl sm:text-2xl font-bold text-white mt-1.5 mb-0">${c.code}</h3>
+              <p class="text-sm text-gray-300 mt-1 mb-0">${c.title}</p>
+            </div>
+            <button id="btnOpenPatientCard" class="btn px-4 py-2 rounded-xl border border-emerald-500/40 bg-emerald-950/40 text-xs font-semibold text-emerald-300 flex items-center gap-1.5 shadow">
+              <span>📋</span> Ver Ficha del Paciente
+            </button>
+          </div>
+
+          <!-- 1. Anamnesis e Historia Clínica -->
+          <div class="bg-black/40 p-5 rounded-2xl border border-[var(--border)] space-y-3 text-xs">
+            <h4 class="font-bold text-amber-300 uppercase tracking-wider mono text-xs flex items-center gap-1.5 m-0">
+              <span>🔍</span> 1. Reseña, Anamnesis & Hallazgos Semiológicos
+            </h4>
+            <div class="p-3 rounded-xl bg-black/50 border border-white/5 space-y-1.5">
+              <div><b>Paciente:</b> <span class="text-gray-200">${c.anamnesis.patient}</span></div>
+              <div><b>Historia / Motivo de Consulta:</b> <span class="text-gray-300 leading-relaxed">${c.anamnesis.history}</span></div>
+              <div><b>Signos Clínicos:</b> <span class="text-gray-200">${c.anamnesis.symptoms}</span></div>
+            </div>
+
+            <!-- Constantes Vitales -->
+            <div class="p-3 rounded-xl bg-black/50 border border-white/5 space-y-2">
+              <b class="text-gray-300 uppercase tracking-wider mono text-[10px] block">🩺 Constantes Fisiológicas Evaluadas:</b>
+              <div class="grid grid-cols-2 sm:grid-cols-4 gap-2 text-center">
+                ${Object.keys(c.anamnesis.vitals).map(vk => `
+                  <div class="p-2 rounded-lg bg-black/40 border border-white/5">
+                    <span class="text-[9px] text-[var(--muted)] uppercase block">${vk}</span>
+                    <b class="mono text-white text-xs">${c.anamnesis.vitals[vk]}</b>
+                  </div>
+                `).join("")}
+              </div>
+            </div>
+          </div>
+
+          <!-- 2. Resultados de Laboratorio Complementarios -->
+          <div class="bg-black/40 p-5 rounded-2xl border border-[var(--border)] space-y-3 text-xs">
+            <h4 class="font-bold text-blue-300 uppercase tracking-wider mono text-xs flex items-center gap-1.5 m-0">
+              <span>🔬</span> 2. Pruebas Complementarias & Laboratorio
+            </h4>
+            <div class="grid sm:grid-cols-3 gap-3">
+              ${Object.keys(c.labFindings).map(lk => `
+                <div class="p-3 rounded-xl bg-black/50 border border-blue-500/20 space-y-1">
+                  <span class="text-[10px] text-blue-400 font-bold uppercase mono block">${lk}</span>
+                  <p class="text-[11px] text-gray-200 m-0">${c.labFindings[lk]}</p>
+                </div>
+              `).join("")}
+            </div>
+          </div>
+
+          <!-- 3. Hipótesis Diagnóstica -->
+          <div class="bg-black/40 p-5 rounded-2xl border border-[var(--border)] space-y-3 text-xs">
+            <h4 class="font-bold text-emerald-300 uppercase tracking-wider mono text-xs flex items-center gap-1.5 m-0">
+              <span>🧠</span> 3. Diagnóstico Presuntivo & Diferenciales (Selecciona la hipótesis definitiva)
+            </h4>
+            <div class="space-y-2">
+              ${c.hypotheses.map(h => `
+                <label class="flex items-start gap-3 p-3.5 rounded-xl border border-[var(--border)] bg-black/30 hover:bg-white/5 cursor-pointer transition">
+                  <input type="radio" name="hypothesis" value="${h.id}" class="accent-emerald-400 mt-0.5" ${caseEngine.studentAnswers.selectedHypothesis === h.id ? 'checked' : ''}>
+                  <div class="text-xs">
+                    <b class="text-white block">${h.label}</b>
+                  </div>
+                </label>
+              `).join("")}
+            </div>
+          </div>
+
+          <!-- 4. Plan Terapéutico y Farmacológico -->
+          <div class="bg-black/40 p-5 rounded-2xl border border-[var(--border)] space-y-3 text-xs">
+            <h4 class="font-bold text-purple-300 uppercase tracking-wider mono text-xs flex items-center gap-1.5 m-0">
+              <span>💊</span> 4. Conducta Terapéutica & Farmacología Aplicada
+            </h4>
+            <p class="text-gray-300 text-xs">${c.treatmentQuestions[0].question}</p>
+            <div class="space-y-2">
+              ${c.treatmentQuestions[0].options.map(opt => `
+                <label class="flex items-start gap-3 p-3.5 rounded-xl border border-[var(--border)] bg-black/30 hover:bg-white/5 cursor-pointer transition">
+                  <input type="radio" name="treatmentOpt" value="${opt.id}" class="accent-purple-400 mt-0.5" ${caseEngine.studentAnswers.selectedTreatmentOpt === opt.id ? 'checked' : ''}>
+                  <span class="text-gray-200">${opt.text}</span>
+                </label>
+              `).join("")}
+            </div>
+          </div>
+
+          <!-- Botón de Evaluación -->
+          <div class="flex flex-wrap justify-between items-center gap-3 pt-2">
+            <span class="text-xs text-[var(--muted)]">Rúbrica universitaria: Diagnóstico (40 pts) · Terapéutica (40 pts) · Razonamiento (20 pts)</span>
+            <button id="btnEvaluateCase" class="btn px-6 py-3 rounded-xl font-bold text-xs sm:text-sm bg-gradient-to-r from-emerald-600 to-blue-600 text-white shadow-xl flex items-center gap-2">
+              <span>📊</span> Evaluar Examen & Emitir Dictamen Académico
+            </button>
+          </div>
+
+          <!-- Contenedor del Reporte Académico -->
+          <div id="caseResultReportContainer" class="hidden"></div>
+        </div>
+      `;
+
+      // Eventos
+      document.querySelectorAll(".btn-case-pick").forEach(btn => {
+        btn.onclick = () => {
+          caseEngine.selectCase(btn.dataset.caseId);
+          renderCasesPage();
+        };
+      });
+
+      document.querySelectorAll("input[name='hypothesis']").forEach(radio => {
+        radio.onchange = (e) => caseEngine.submitHypothesis(e.target.value);
+      });
+
+      document.querySelectorAll("input[name='treatmentOpt']").forEach(radio => {
+        radio.onchange = (e) => caseEngine.submitTreatment(e.target.value);
+      });
+
+      const btnPatient = document.getElementById("btnOpenPatientCard");
+      if (btnPatient) {
+        btnPatient.onclick = () => {
+          const animal = store.get("animals")[c.targetAnimalId] || store.getSelectedAnimal();
+          store.emit("animal:selected", animal);
+        };
+      }
+
+      const btnEval = document.getElementById("btnEvaluateCase");
+      if (btnEval) {
+        btnEval.onclick = () => {
+          const rep = caseEngine.evaluateStudentReport();
+          displayReport(rep);
+        };
+      }
+    }
+
+    function displayReport(report) {
+      const box = document.getElementById("caseResultReportContainer");
+      if (!box) return;
+
+      box.classList.remove("hidden");
+      box.innerHTML = `
+        <div class="p-6 rounded-2xl border ${report.passed ? 'border-emerald-500/50 bg-emerald-950/40' : 'border-red-500/50 bg-red-950/40'} space-y-4 shadow-2xl">
+          <div class="flex justify-between items-center border-b border-white/10 pb-3">
+            <div>
+              <span class="text-[10px] mono text-gray-400 uppercase tracking-wider block">INFORME DE EVALUACIÓN ACADÉMICA</span>
+              <h4 class="display font-bold text-lg text-white m-0">${report.caseCode}</h4>
+              <span class="text-xs text-gray-300 mono">Fecha: ${report.date}</span>
+            </div>
+            <div class="text-right">
+              <span class="text-[10px] text-gray-400 uppercase block">Calificación Final</span>
+              <span class="display text-3xl font-bold ${report.passed ? 'text-emerald-400' : 'text-rose-400'}">
+                ${report.studentScore} / 100
+              </span>
+            </div>
+          </div>
+
+          <div class="grid grid-cols-3 gap-3 text-center text-xs">
+            <div class="chip">
+              <span class="text-[9px] text-[var(--muted)] block">DIAGNÓSTICO</span>
+              <b class="mono text-white text-base">${report.breakdown.diagnostico} / 40</b>
+            </div>
+            <div class="chip">
+              <span class="text-[9px] text-[var(--muted)] block">TERAPÉUTICA</span>
+              <b class="mono text-white text-base">${report.breakdown.tratamiento} / 40</b>
+            </div>
+            <div class="chip">
+              <span class="text-[9px] text-[var(--muted)] block">RAZONAMIENTO</span>
+              <b class="mono text-white text-base">${report.breakdown.razonamiento} / 20</b>
+            </div>
+          </div>
+
+          <div class="space-y-2 text-xs text-gray-200">
+            ${report.feedback.map(fb => `<div class="p-3 rounded-xl bg-black/40 border border-white/5 leading-relaxed">${fb}</div>`).join("")}
+          </div>
+
+          <div class="text-center pt-2">
+            <span class="mono text-xs text-emerald-300 font-bold">
+              ${report.passed ? '🎉 ¡Felicidades! Has aprobado el caso clínico con distinción.' : '⚠️ Caso no aprobado. Revisa la fundamentación teórica y vuelve a intentarlo.'}
+            </span>
+          </div>
+        </div>
+      `;
+
+      box.scrollIntoView({ behavior: "smooth" });
+    }
+
+    window.addEventListener("DOMContentLoaded", () => {
+      new SharedNav("casos");
+      renderCasesPage();
+    });
+  </script>
+</body>
+</html>

@@ -1,63 +1,66 @@
-# 🧬 ZOOTECNIA 3D — Granja Escuela Virtual & Laboratorio Universitario
+# 🧬 VET & ZOO LAB — Campus Digital Universitario de Medicina Veterinaria & Zootecnia
 
-> **Simulador Profesional y Entorno Virtual Educativo para Ciencias Agropecuarias y Medicina Veterinaria.**
-
----
-
-## 🌟 Características Principales
-
-1. **🌎 Granja Escuela 3D Interactiva (Three.js & WebGL):**
-   - Modelos GLB animados de especies domésticas (Bovino, Equino, Ovino, Porcino).
-   - Entorno con potreros rotacionales, establo, comederos y ambientación low-poly.
-   - Navegación orbital y cámara dirigida por zonas e inspección semiológica individual.
-
-2. **💉 Consultorio & Simulador Histológico de Punción:**
-   - Corte histológico 2D interactivo con física y geometría de inserción exacta.
-   - 4 planos anatómicos: Epidermis/Dermis (ID: 10°-20°), Subcutáneo (SC: 35°-55°), Músculo (IM: 75°-90°) y Vena Yugular (IV: 20°-35°).
-   - Farmacopea científica basada en **Denominación Común Internacional (DCI)**: *Flunixin Meglumina*, *Oxitetraciclina L.A.*, *Ivermectina*, *Penicilina G Benzatínica*, *Meloxicam*, *Gluconato de Calcio*, *Tuberculina PPD*, *Ceftiofur*.
-   - Prueba de aspiración previa de émbolo (detección de reflujo venoso de sangre roja).
-   - Generador dinámico de casos clínicos universitarios en vivo.
-
-3. **🌾 Estación de Nutrición & Formulación Bromatológica:**
-   - Formulación TMR en tiempo real con cálculo de Energía Metabolizable (Mcal/kg), Proteína Cruda (% PC), Fibra Detergente Neutro (% FDN), Calcio, Fósforo y Costo diario.
-   - Generador de desafíos bromatológicos en vivo (Prevención de SARA, Pico de lactancia, cólico equino, engorde porcino).
-
-4. **🌱 Laboratorio de Agrostología, Pastos & Forrajes (PRV):**
-   - Herbario científico de 8 especies forrajeras (*Brachiaria brizantha*, *Panicum maximum*, *Pennisetum purpureum*, *Lolium perenne*, *Medicago sativa*, *Trifolium repens*, *Leucaena leucocephala*, *Pennisetum clandestinum*).
-   - Mapa de 8 potreros con cálculo de Punto Óptimo de Reposo (POR) y Carga Instantánea ($UGM/Ha$).
-   - Simulador de aforo por cuadrante ($1\text{ m}^2$), 4 Leyes de André Voisin y módulo de conservación (Silo y heno).
-   - Generador de problemas matemáticos zootécnicos de capacidad de carga con comprobación paso a paso.
-
-5. **📋 Casos Integrales Universitarios & Rúbricas:**
-   - Flujo de resolución de casos con evaluación de diagnóstico presuntivo, ajuste nutricional, maniobra clínica y dictamen de desempeño sobre 100 puntos.
+> **Plataforma Educativa Universitaria, Entorno Virtual 3D y Laboratorios Clínicos Independientes para Ciencias Agropecuarias.**
 
 ---
 
-## 🛠️ Estructura del Código
+## 🌟 Módulos y Páginas Independientes (13 Entornos)
 
-```text
-├── index.html               # Punto de entrada principal
-├── .nojekyll                # Deshabilita el procesamiento Jekyll en GitHub Pages
-├── .gitignore
-├── css/
-│   └── styles.css           # Estilos científicos y tokens visuales
-├── js/
-│   ├── app.js               # Bootstrap y ServiceContainer
-│   ├── core/
-│   │   ├── Container.js     # IoC Service Container
-│   │   ├── Store.js         # Estado centralizado reactivo
-│   │   └── SimEngine.js     # Motor biológico y bromatológico
-│   ├── farm/
-│   │   ├── Farm3D.js        # Escena 3D y zonas
-│   │   └── AnimalManager.js # Entidades y animaciones
-│   ├── modules/
-│   │   ├── ClinicalLab.js   # Simulador de inyección y farmacopea DCI
-│   │   ├── NutritionLab.js  # Formulación bromatológica
-│   │   ├── PastureLab.js    # Agrostología y PRV
-│   │   └── CaseEngine.js    # Casos universitarios
-│   └── ui/
-│       ├── HUD.js
-│       ├── AnimalCardModal.js
-│       └── StudentProfileModal.js
-└── models/                  # Modelos 3D optimizados en formato .glb
-```
+1. **🏠 Portal Universitario Maestro (`index.html`):**
+   - Centro de bienvenida interactivo con catálogo de competencias, 12 tarjetas de módulos y telemetría en vivo.
+
+2. **🌱 Pastos, Forrajes & Fertilización (`pastos.html`):**
+   - Simulador de 7 fertilizantes (*Urea*, *NPK 15-15-15*, *DAP*, *Cal Dolomítica*, *Sulfato de Amonio*, *Compost*, *KCl*) con evaluación de respuesta biológica (*Excelente*, *Regular*, *Mala*).
+   - Aforo por cuadrante de $1\text{ m}^2$, cálculo de biomasa ($kg\text{ MS/Ha}$), Punto Óptimo de Reposo y 4 Leyes de André Voisin.
+
+3. **🦠 Atlas Parasitológico & Microscopio Virtual (`parasitos.html`):**
+   - Microscopio con retícula McMaster, aumentos (10x, 40x, 100x), morfometría de 12 especies (*Haemonchus*, *Fasciola*, *Eimeria*, *Moniezia*, *Toxocara*, etc.).
+   - Escala ocular interactiva **FAMACHA©** (Grados 1 al 5) y calculadora cuantitativa de **Huevos Por Gramo (HPG)**.
+
+4. **🔬 Diagnóstico Clínico Multiespecie (`diagnostico.html`):**
+   - Analizador automatizado de hemogramas, bioquímica sérica, uroanálisis y simulador de punción tisular (ID, SC, IM, IV) con farmacopea DCI.
+   - Cálculo automático de periodos de retiro en carne y leche para inocuidad alimentaria.
+
+5. **🎓 Casos Clínicos Universitarios (`casos.html`):**
+   - 5 casos clínicos reales (SARA, Cólico equino, Neumonía bacteriana, Hipocalcemia puerperal, Haemonchosis ovina) con anamnesis profunda, semiología y rúbrica de calificación académica de 100 pts.
+
+6. **⏱️ Modo Examen Cronometrado 10 min (`examen.html`):**
+   - Caso sorpresa al azar bajo presión de tiempo con temporizador visual, alertas y dictamen formal del jurado docente.
+
+7. **🐄 Entrenador de Condición Corporal BCS (`bcs.html`):**
+   - Evaluación semiológica en Bovinos (1-5 Edmonson & Ferguson) y Equinos (1-9 Henneke) con puntos óseos de referencia y balance energético posparto.
+
+8. **🌿 Plantas Tóxicas Regionales (`plantas.html`):**
+   - Catálogo de 18 plantas tóxicas tropicales y andinas (*Brachiaria decumbens*, *Enterolobium*, *Pteridium*, *Palicourea*, *Ricinus*, *Nerium*, *Yuca*, etc.), antídotos y quiz clínico en campo.
+
+9. **📋 Cronograma Sanitario & Bioseguridad (`sanitario.html`):**
+   - Planes de vacunación oficial obligatoria ICA/SENASA (Fiebre Aftosa, Brucelosis, Rabia) y emisión de Certificado de Auditoría en Buenas Prácticas Ganaderas (BPG).
+
+10. **📐 Calculadoras Clínicas & Zootécnicas (`calculadoras.html`):**
+    - 6 herramientas de cálculo: Fluidoterapia por deshidratación ($gotas/min$ y $mL/h$), Dosificación farmacológica, Balance de Cuadrado de Pearson, Aforo/UGM, GDP/FCR y Calostro Brix.
+
+11. **📓 Cuaderno de Campo SOAP (`cuaderno.html`):**
+    - Bitácora clínica hospitalaria bajo metodología SOAP (*Subjetivo, Objetivo, Análisis, Plan*) con historial cronológico y exportación de historias clínicas a texto descargable.
+
+12. **🐾 Granja Escuela Virtual 3D (`granja.html`):**
+    - Entorno 3D interactivo en Three.js con modelos GLB animados (bovino, equino, ovino, porcino), censo de hato e inspección individual.
+
+13. **🌾 Estación de Nutrición & Formulación Bromatológica (`nutricion.html`):**
+    - Formulación TMR en tiempo real con balances de Proteína Cruda (% PC), Energía Metabolizable (Mcal/kg), Fibra FDN y costos diarios.
+
+---
+
+## 🏆 Sistema de Gamificación Académica
+
+- **6 Rangos Académicos:** *Practicante (0 XP) → Interno (500 XP) → Residente (2000 XP) → Especialista (5000 XP) → Diplomado (10000 XP) → Maestro Clínico (20000 XP)*.
+- **25+ Logros Desbloqueables** que premian diagnósticos acertados, aforos precisos, identificaciones parasitarias y cálculos clínicos.
+- **Racha Diaria de Estudio** con persistencia en `localStorage`.
+
+---
+
+## 🚀 Despliegue en GitHub Pages
+
+Este proyecto utiliza **JavaScript ES6 Vanilla**, **Three.js** y **Tailwind CSS**, por lo que **no requiere build ni dependencias de backend**. Es 100% estático y compatible de forma nativa con GitHub Pages.
+
+Sitio en vivo:  
+👉 **[https://aglprogamer-byte.github.io/VetZoo_Lab/](https://aglprogamer-byte.github.io/VetZoo_Lab/)**

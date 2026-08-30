@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Pastos & Forrajes — Fertilización y Agrostología | Vet & Zoo Lab</title>
+  <meta name="description" content="Laboratorio de Agrostología, simulador de fertilizantes con respuesta biológica (Excelente, Regular, Fitotóxico), aforo de pasturas y leyes de Voisin.">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🌱</text></svg>">
+
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600;700&family=Inter:wght@400;500;600;700;800&family=Space+Grotesk:wght@600;700;800&display=swap" rel="stylesheet">
+
+  <!-- Tailwind CSS -->
+  <script src="https://cdn.tailwindcss.com"></script>
+
+  <!-- Custom Styles -->
+  <link rel="stylesheet" href="css/styles.css">
+</head>
+
+<body>
+  <!-- Contenedor Toast -->
+  <div id="toast" class="fixed right-4 top-4 z-50 max-w-sm space-y-2"></div>
+
+  <!-- Barra de Navegación Global -->
+  <header class="max-w-7xl mx-auto px-4 pt-4" id="sharedNavContainer"></header>
+
+  <!-- Contenedor Principal de Pastos y Forrajes -->
+  <main class="max-w-7xl mx-auto px-4 pt-4 pb-16">
+    <div class="glass hud-card rounded-3xl p-6 sm:p-8" id="pastureLabContainer"></div>
+  </main>
+
+  <!-- Footer Científico -->
+  <footer class="max-w-7xl mx-auto px-4 pb-8 text-center text-xs text-[var(--muted)] border-t border-[var(--border)] pt-4">
+    🌱 VET & ZOO LAB — Módulo de Agrostología, Nutrición Vegetal & Manejo Racional de Pasturas.
+  </footer>
+
+  <!-- Script Bootstrap -->
+  <script type="module">
+    import { SharedNav } from "./js/ui/SharedNav.js";
+    import { PastureLab } from "./js/modules/PastureLab.js";
+    import { store } from "./js/core/Store.js";
+
+    window.addEventListener("DOMContentLoaded", () => {
+      new SharedNav("pastos");
+      new PastureLab("pastureLabContainer", { storeInstance: store });
+    });
+  </script>
+</body>
+</html>

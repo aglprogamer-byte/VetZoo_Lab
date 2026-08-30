@@ -3,220 +3,363 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Zootecnia 3D — Granja Escuela Virtual & Laboratorio Universitario</title>
+  <title>VET & ZOO LAB — Campus Digital Universitario de Medicina Veterinaria & Zootecnia</title>
+  <meta name="description" content="Plataforma docente interactiva con 12 módulos independientes: simuladores de fertilizantes, microscopio McMaster, atlas de parásitos, casos clínicos universitarios, calculadoras de dosis, bitácora SOAP y granja 3D.">
   <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🧬</text></svg>">
 
-  <!-- Google Fonts: Inter, Space Grotesk, IBM Plex Mono -->
+  <!-- Google Fonts -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600;700&family=Inter:wght@400;500;600;700&family=Space+Grotesk:wght@600;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600;700&family=Inter:wght@400;500;600;700;800&family=Space+Grotesk:wght@600;700;800&display=swap" rel="stylesheet">
 
   <!-- Tailwind CSS -->
   <script src="https://cdn.tailwindcss.com"></script>
 
-  <!-- Three.js r128 & GLTFLoader -->
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/loaders/GLTFLoader.js"></script>
-
-  <!-- Custom Scientific Styles -->
+  <!-- Custom Styles -->
   <link rel="stylesheet" href="css/styles.css">
 </head>
 
 <body>
-  <!-- Contenedor de Alertas Toast -->
+  <!-- Contenedor Toast -->
   <div id="toast" class="fixed right-4 top-4 z-50 max-w-sm space-y-2"></div>
 
-  <!-- Contenedores de Modales Universitarios -->
-  <div id="animalCardModalContainer" class="hidden"></div>
-  <div id="studentProfileModalContainer" class="hidden"></div>
+  <!-- Barra de Navegación Global -->
+  <header class="max-w-7xl mx-auto px-4 pt-4" id="sharedNavContainer"></header>
 
-  <!-- Cabecera y HUD Principal -->
-  <header class="max-w-7xl mx-auto px-4 pt-4" id="hudContainer"></header>
+  <!-- Contenedor Principal del Portal Universitario -->
+  <main class="max-w-7xl mx-auto px-4 pt-6 pb-16 space-y-12">
 
-  <!-- Contenedor Principal de la Granja Escuela -->
-  <main class="max-w-7xl mx-auto px-4 pt-3 pb-12">
+    <!-- Hero Section -->
+    <section class="glass hud-card rounded-3xl p-6 sm:p-10 relative overflow-hidden border border-[var(--border)]">
+      <div class="absolute -right-16 -top-16 w-80 h-80 rounded-full bg-emerald-500/10 blur-3xl pointer-events-none"></div>
+      <div class="absolute -left-16 -bottom-16 w-80 h-80 rounded-full bg-blue-500/10 blur-3xl pointer-events-none"></div>
 
-    <!-- ==================== 1. PESTAÑA: VISTA GRANJA 3D ==================== -->
-    <section id="tab-overview" class="grid lg:grid-cols-5 gap-4">
-      <!-- Columna Lateral: Censo de Animales y Acciones de Finca -->
-      <aside class="lg:col-span-2 space-y-4">
-        <!-- Censo de Animales de la Granja Escuela -->
-        <div class="glass hud-card rounded-2xl p-4 space-y-3">
-          <div class="flex justify-between items-center border-b border-[var(--border)] pb-2.5">
-            <h2 class="display font-bold text-sm text-white flex items-center gap-1.5">
-              <span>🐾</span> Censo de Animales del Hato
-            </h2>
-            <span class="mono text-[10px] text-emerald-400 font-semibold uppercase">4 Ejemplares</span>
-          </div>
-
-          <!-- Lista de Animales Interactivos -->
-          <div class="space-y-2" id="animalsRosterList">
-            <!-- Vaca #017 -->
-            <div class="animal-card btn p-3 rounded-xl border border-[var(--border)] bg-black/30 hover:bg-white/5 flex items-center justify-between" data-animal-id="cow_017">
-              <div class="flex items-center gap-2.5 pointer-events-none">
-                <span class="text-2xl">🐄</span>
-                <div>
-                  <b class="text-xs text-white block">VACA #017 — Margarita</b>
-                  <span class="text-[10px] text-[var(--muted)] mono">Holstein · 525 kg · Lactancia</span>
-                </div>
-              </div>
-              <div class="text-right pointer-events-none">
-                <span class="mono text-xs text-emerald-400 font-bold block">23.5 L/d</span>
-                <span class="mono text-[9px] text-gray-400">BCS 3.25</span>
-              </div>
-            </div>
-
-            <!-- Caballo #004 -->
-            <div class="animal-card btn p-3 rounded-xl border border-[var(--border)] bg-black/30 hover:bg-white/5 flex items-center justify-between" data-animal-id="horse_004">
-              <div class="flex items-center gap-2.5 pointer-events-none">
-                <span class="text-2xl">🐎</span>
-                <div>
-                  <b class="text-xs text-white block">EQUINO #004 — Relámpago</b>
-                  <span class="text-[10px] text-[var(--muted)] mono">Criollo · 460 kg · Deporte</span>
-                </div>
-              </div>
-              <div class="text-right pointer-events-none">
-                <span class="mono text-xs text-blue-300 font-bold block">Salud 98%</span>
-                <span class="mono text-[9px] text-gray-400">BCS 3.5</span>
-              </div>
-            </div>
-
-            <!-- Oveja #031 -->
-            <div class="animal-card btn p-3 rounded-xl border border-[var(--border)] bg-black/30 hover:bg-white/5 flex items-center justify-between" data-animal-id="sheep_031">
-              <div class="flex items-center gap-2.5 pointer-events-none">
-                <span class="text-2xl">🐑</span>
-                <div>
-                  <b class="text-xs text-white block">OVINO #031 — Blanquita</b>
-                  <span class="text-[10px] text-[var(--muted)] mono">Hampshire · 46 kg · Gestación</span>
-                </div>
-              </div>
-              <div class="text-right pointer-events-none">
-                <span class="mono text-xs text-amber-300 font-bold block">Día 45 Gest.</span>
-                <span class="mono text-[9px] text-gray-400">BCS 3.0</span>
-              </div>
-            </div>
-
-            <!-- Cerdo #088 -->
-            <div class="animal-card btn p-3 rounded-xl border border-[var(--border)] bg-black/30 hover:bg-white/5 flex items-center justify-between" data-animal-id="pig_088">
-              <div class="flex items-center gap-2.5 pointer-events-none">
-                <span class="text-2xl">🐖</span>
-                <div>
-                  <b class="text-xs text-white block">PORCINO #088 — Tomy</b>
-                  <span class="text-[10px] text-[var(--muted)] mono">Landrace · 36.5 kg · Crecimiento</span>
-                </div>
-              </div>
-              <div class="text-right pointer-events-none">
-                <span class="mono text-xs text-purple-300 font-bold block">FCR 2.65</span>
-                <span class="mono text-[9px] text-gray-400">BCS 3.25</span>
-              </div>
-            </div>
-          </div>
+      <div class="relative z-10 max-w-3xl space-y-4">
+        <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-emerald-950/70 border border-emerald-500/40 text-emerald-300 text-xs font-bold uppercase tracking-wider">
+          <span>🧬</span> Campus Digital & Simulación Clínica Zootécnica
         </div>
 
-        <!-- Panel de Zonas de la Granja -->
-        <div class="glass hud-card rounded-2xl p-4 space-y-2 text-xs">
-          <div class="flex justify-between items-center mb-1">
-            <h3 class="font-bold text-white uppercase tracking-wider mono text-[11px]">Navegación de Instalaciones</h3>
-            <span class="text-[10px] text-[var(--muted)]">VISTA DE CÁMARA</span>
-          </div>
-          <div class="grid grid-cols-2 gap-2" id="zonesNavGrid">
-            <button class="btn zone-btn p-2 rounded-xl bg-black/30 hover:bg-white/10 border border-[var(--border)] text-left" data-zone-id="overview">
-              <b class="text-white block pointer-events-none">🌐 Granja General</b>
-              <span class="text-[9px] text-[var(--muted)] pointer-events-none">Vista aérea total</span>
-            </button>
-            <button class="btn zone-btn p-2 rounded-xl bg-black/30 hover:bg-white/10 border border-[var(--border)] text-left" data-zone-id="pasture">
-              <b class="text-white block pointer-events-none">🌱 Potrero 1</b>
-              <span class="text-[9px] text-[var(--muted)] pointer-events-none">Área de pastoreo</span>
-            </button>
-            <button class="btn zone-btn p-2 rounded-xl bg-black/30 hover:bg-white/10 border border-[var(--border)] text-left" data-zone-id="stable">
-              <b class="text-white block pointer-events-none">🏠 Establo</b>
-              <span class="text-[9px] text-[var(--muted)] pointer-events-none">Manejo y corrales</span>
-            </button>
-            <button class="btn zone-btn p-2 rounded-xl bg-black/30 hover:bg-white/10 border border-[var(--border)] text-left" data-zone-id="feeder">
-              <b class="text-white block pointer-events-none">🥣 Comederos</b>
-              <span class="text-[9px] text-[var(--muted)] pointer-events-none">Alimentación</span>
-            </button>
-          </div>
-        </div>
-      </aside>
+        <h1 class="display text-3xl sm:text-5xl font-extrabold tracking-tight text-white leading-tight m-0">
+          Laboratorio Virtual & Prácticas Universitarias de <span class="text-transparent bg-clip-text bg-gradient-to-r from-emerald-400 via-teal-200 to-blue-400">Veterinaria & Zootecnia</span>
+        </h1>
 
-      <!-- Columna Principal: Visor 3D de la Granja -->
-      <section class="lg:col-span-3 space-y-4">
-        <div class="glass hud-card rounded-2xl p-4">
-          <div class="flex justify-between items-center mb-3">
-            <div>
-              <h2 class="display font-bold text-base text-white flex items-center gap-2">
-                <span>🌎</span> Entorno Virtual de Campo 3D
-              </h2>
-              <p class="text-xs text-[var(--muted)]">Haz clic sobre cualquier animal o zona para interactuar y abrir su expediente.</p>
-            </div>
-            <div class="chip mono text-xs text-emerald-300 font-semibold">GRANJA ACTIVA</div>
-          </div>
+        <p class="text-sm sm:text-base text-gray-300 leading-relaxed max-w-2xl m-0">
+          Un ecosistema docente independiente y riguroso. Estudia casos clínicos con anamnesis real, evalúa la respuesta biológica de fertilizantes, identifica parásitos en microscopio McMaster, entrena tu ojo clínico con condición corporal (BCS) y gestiona planes sanitarios de campo.
+        </p>
 
-          <div id="sceneWrap">
-            <canvas id="scene3d"></canvas>
-            <div class="scene-label top-3 left-3 glass rounded-lg px-3 py-1.5 text-[11px] mono text-white">
-              🌿 SIMULADOR 3D DE CAMPO
-            </div>
-            <div class="scene-label bottom-3 left-3 glass rounded-lg px-3 py-1.5 text-xs text-[var(--muted)]">
-              <span>💡 Arrastra para orbitar · Rueda para zoom · Clic en animal para inspección.</span>
-            </div>
-          </div>
-        </div>
-      </section>
-    </section>
-
-    <!-- ==================== 2. PESTAÑA: ESTACIÓN DE NUTRICIÓN ==================== -->
-    <section id="tab-nutrition" class="hidden">
-      <div class="glass hud-card rounded-2xl p-6" id="nutritionLabContainer"></div>
-    </section>
-
-    <!-- ==================== 3. PESTAÑA: CONSULTORIO & ANATOMÍA CLÍNICA ==================== -->
-    <section id="tab-clinic" class="hidden grid lg:grid-cols-5 gap-4">
-      <!-- Visor Anatómico e Histológico de Punción -->
-      <div class="lg:col-span-3 glass hud-card rounded-2xl p-5 space-y-3">
-        <div class="flex justify-between items-center">
-          <div>
-            <h3 class="display font-bold text-base text-white flex items-center gap-2">
-              <span>🔬</span> Corte Histológico & Simulador de Punción
-            </h3>
-            <p class="text-xs text-[var(--muted)]">Arrastra sobre el corte o ajusta los controles para posicionar el bisel en el plano anatómico exacto.</p>
-          </div>
-          <span class="chip mono text-xs font-bold text-emerald-300">PUNCIÓN EN VIVO</span>
-        </div>
-
-        <div id="anatomyWrap" class="rounded-2xl overflow-hidden border border-[var(--border)] bg-black/40 relative shadow-inner">
-          <canvas id="anatomy3d" style="width:100%;height:420px;display:block;"></canvas>
-        </div>
-
-        <div class="text-[11px] text-[var(--muted)] flex justify-between px-1">
-          <span>Capas: <b>Piel (ID 10-20°)</b> · <b>Subcutáneo (SC 35-55°)</b> · <b>Músculo (IM 75-90°)</b> · <b>Vena Yugular (IV 20-35°)</b></span>
-          <span class="mono text-emerald-400 font-semibold">Resolución Celular 2D/3D</span>
+        <div class="flex flex-wrap gap-3 pt-3">
+          <a href="casos.html" class="btn px-6 py-3.5 rounded-xl font-bold text-xs sm:text-sm bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-500 hover:to-teal-500 text-white shadow-xl flex items-center gap-2 no-underline">
+            <span>🎓</span> Resolver Casos de Examen
+          </a>
+          <a href="parasitos.html" class="btn px-6 py-3.5 rounded-xl font-bold text-xs sm:text-sm bg-black/50 hover:bg-white/10 text-teal-300 border border-teal-500/40 flex items-center gap-2 no-underline">
+            <span>🦠</span> Microscopio McMaster
+          </a>
+          <a href="pastos.html" class="btn px-6 py-3.5 rounded-xl font-bold text-xs sm:text-sm bg-black/50 hover:bg-white/10 text-emerald-300 border border-emerald-500/40 flex items-center gap-2 no-underline">
+            <span>🌱</span> Pastos & Fertilizantes
+          </a>
+          <a href="diagnostico.html" class="btn px-6 py-3.5 rounded-xl font-bold text-xs sm:text-sm bg-black/50 hover:bg-white/10 text-blue-300 border border-blue-500/40 flex items-center gap-2 no-underline">
+            <span>🔬</span> Centro de Diagnóstico
+          </a>
         </div>
       </div>
-
-      <!-- Controles de Procedimiento Semiológico y Punción -->
-      <div class="lg:col-span-2 glass hud-card rounded-2xl p-5" id="clinicalLabControls"></div>
     </section>
 
-    <!-- ==================== 4. PESTAÑA: PASTOS Y FORRAJES ==================== -->
-    <section id="tab-pasture" class="hidden">
-      <div class="glass hud-card rounded-2xl p-6" id="pastureLabContainer"></div>
+    <!-- Resumen de Módulos Universitarios Independientes -->
+    <section class="space-y-6">
+      <div class="flex flex-wrap justify-between items-end gap-3 border-b border-[var(--border)] pb-3">
+        <div>
+          <span class="text-xs mono text-emerald-400 font-bold uppercase tracking-wider block">CAMPUS DIGITAL COMPLETO · 12 MÓDULOS</span>
+          <h2 class="display text-2xl font-bold text-white m-0">Entornos de Aprendizaje & Simulación</h2>
+        </div>
+        <span class="text-xs text-[var(--muted)]">Cada módulo cuenta con su propia ventana independiente</span>
+      </div>
+
+      <!-- Grid de 12 Tarjetas de Módulos -->
+      <div class="grid sm:grid-cols-2 lg:grid-cols-3 gap-5">
+        
+        <!-- 1. Pastos y Forrajes -->
+        <a href="pastos.html" class="feature-card glass hud-card rounded-2xl p-6 border border-[var(--border)] space-y-4 no-underline text-inherit block group">
+          <div class="flex justify-between items-start">
+            <div class="w-12 h-12 rounded-2xl bg-emerald-500/20 border border-emerald-500/40 flex items-center justify-center text-2xl">
+              🌱
+            </div>
+            <span class="badge-tag bg-emerald-500/20 text-emerald-300 border border-emerald-500/30">Agrostología</span>
+          </div>
+          <div>
+            <h3 class="display text-lg font-bold text-white group-hover:text-emerald-300 transition m-0">Pastos, Forrajes & Fertilizantes</h3>
+            <p class="text-xs text-gray-300 mt-2 leading-relaxed m-0">
+              Simulador interactivo de 7 fertilizantes (Urea, NPK, Cal, DAP) con evaluación biológica (Excelente, Regular, Fitotóxico), aforo de 1m² y leyes de Voisin.
+            </p>
+          </div>
+          <div class="flex items-center justify-between pt-3 border-t border-white/5 text-xs font-semibold text-emerald-400">
+            <span>Entrar al Laboratorio</span>
+            <span>→</span>
+          </div>
+        </a>
+
+        <!-- 2. Atlas de Parásitos & Microscopio -->
+        <a href="parasitos.html" class="feature-card glass hud-card rounded-2xl p-6 border border-[var(--border)] space-y-4 no-underline text-inherit block group">
+          <div class="flex justify-between items-start">
+            <div class="w-12 h-12 rounded-2xl bg-teal-500/20 border border-teal-500/40 flex items-center justify-center text-2xl">
+              🦠
+            </div>
+            <span class="badge-tag bg-teal-500/20 text-teal-300 border border-teal-500/30">Parasitología</span>
+          </div>
+          <div>
+            <h3 class="display text-lg font-bold text-white group-hover:text-teal-300 transition m-0">Atlas Parasitológico & Microscopio</h3>
+            <p class="text-xs text-gray-300 mt-2 leading-relaxed m-0">
+              Óptica virtual con retícula McMaster, morfometría de 12 especies (Haemonchus, Fasciola, Eimeria), escala ocular FAMACHA y conteo HPG.
+            </p>
+          </div>
+          <div class="flex items-center justify-between pt-3 border-t border-white/5 text-xs font-semibold text-teal-400">
+            <span>Mirar al Microscopio</span>
+            <span>→</span>
+          </div>
+        </a>
+
+        <!-- 3. Diagnóstico Clínico -->
+        <a href="diagnostico.html" class="feature-card glass hud-card rounded-2xl p-6 border border-[var(--border)] space-y-4 no-underline text-inherit block group">
+          <div class="flex justify-between items-start">
+            <div class="w-12 h-12 rounded-2xl bg-blue-500/20 border border-blue-500/40 flex items-center justify-center text-2xl">
+              🔬
+            </div>
+            <span class="badge-tag bg-blue-500/20 text-blue-300 border border-blue-500/30">Semiología & Lab</span>
+          </div>
+          <div>
+            <h3 class="display text-lg font-bold text-white group-hover:text-blue-300 transition m-0">Diagnóstico Clínico Multiespecie</h3>
+            <p class="text-xs text-gray-300 mt-2 leading-relaxed m-0">
+              Analizador de hemogramas automatizados, bioquímica sérica, uroanálisis y simulador de punción tisular (ID, SC, IM, IV) con farmacopea DCI.
+            </p>
+          </div>
+          <div class="flex items-center justify-between pt-3 border-t border-white/5 text-xs font-semibold text-blue-400">
+            <span>Abrir Diagnóstico</span>
+            <span>→</span>
+          </div>
+        </a>
+
+        <!-- 4. Casos Universitarios -->
+        <a href="casos.html" class="feature-card glass hud-card rounded-2xl p-6 border border-[var(--border)] space-y-4 no-underline text-inherit block group">
+          <div class="flex justify-between items-start">
+            <div class="w-12 h-12 rounded-2xl bg-amber-500/20 border border-amber-500/40 flex items-center justify-center text-2xl">
+              🎓
+            </div>
+            <span class="badge-tag bg-amber-500/20 text-amber-300 border border-amber-500/30">Exámenes Reales</span>
+          </div>
+          <div>
+            <h3 class="display text-lg font-bold text-white group-hover:text-amber-300 transition m-0">Casos Universitarios (Misiones)</h3>
+            <p class="text-xs text-gray-300 mt-2 leading-relaxed m-0">
+              Simulaciones de exámenes clínicos reales: SARA, cólico equino, neumonía bacteriana, hipocalcemia puerperal y rúbrica de calificación académica.
+            </p>
+          </div>
+          <div class="flex items-center justify-between pt-3 border-t border-white/5 text-xs font-semibold text-amber-400">
+            <span>Iniciar Examen</span>
+            <span>→</span>
+          </div>
+        </a>
+
+        <!-- 5. Examen Cronometrado 10 min -->
+        <a href="examen.html" class="feature-card glass hud-card rounded-2xl p-6 border border-[var(--border)] space-y-4 no-underline text-inherit block group">
+          <div class="flex justify-between items-start">
+            <div class="w-12 h-12 rounded-2xl bg-rose-500/20 border border-rose-500/40 flex items-center justify-center text-2xl">
+              ⏱️
+            </div>
+            <span class="badge-tag bg-rose-500/20 text-rose-300 border border-rose-500/30">Presión Real</span>
+          </div>
+          <div>
+            <h3 class="display text-lg font-bold text-white group-hover:text-rose-300 transition m-0">Modo Examen Cronometrado</h3>
+            <p class="text-xs text-gray-300 mt-2 leading-relaxed m-0">
+              Caso clínico sorpresa con cuenta regresiva de 10 minutos. Evalúa agilidad diagnóstica, tratamiento de urgencia y control del tiempo bajo estrés.
+            </p>
+          </div>
+          <div class="flex items-center justify-between pt-3 border-t border-white/5 text-xs font-semibold text-rose-400">
+            <span>Presentar Examen</span>
+            <span>→</span>
+          </div>
+        </a>
+
+        <!-- 6. Condición Corporal BCS -->
+        <a href="bcs.html" class="feature-card glass hud-card rounded-2xl p-6 border border-[var(--border)] space-y-4 no-underline text-inherit block group">
+          <div class="flex justify-between items-start">
+            <div class="w-12 h-12 rounded-2xl bg-amber-500/20 border border-amber-500/40 flex items-center justify-center text-2xl">
+              🐄
+            </div>
+            <span class="badge-tag bg-amber-500/20 text-amber-300 border border-amber-500/30">Ojo Clínico</span>
+          </div>
+          <div>
+            <h3 class="display text-lg font-bold text-white group-hover:text-amber-300 transition m-0">Entrenador de Condición (BCS)</h3>
+            <p class="text-xs text-gray-300 mt-2 leading-relaxed m-0">
+              Evaluación semiológica de reservas energéticas en bovinos (1-5 Edmonson) y equinos (1-9 Henneke) con puntos óseos y balance energético posparto.
+            </p>
+          </div>
+          <div class="flex items-center justify-between pt-3 border-t border-white/5 text-xs font-semibold text-amber-400">
+            <span>Entrenar BCS</span>
+            <span>→</span>
+          </div>
+        </a>
+
+        <!-- 7. Plantas Tóxicas Regionales -->
+        <a href="plantas.html" class="feature-card glass hud-card rounded-2xl p-6 border border-[var(--border)] space-y-4 no-underline text-inherit block group">
+          <div class="flex justify-between items-start">
+            <div class="w-12 h-12 rounded-2xl bg-emerald-500/20 border border-emerald-500/40 flex items-center justify-center text-2xl">
+              🌿
+            </div>
+            <span class="badge-tag bg-emerald-500/20 text-emerald-300 border border-emerald-500/30">Toxicología</span>
+          </div>
+          <div>
+            <h3 class="display text-lg font-bold text-white group-hover:text-emerald-300 transition m-0">Plantas Tóxicas & Toxicología</h3>
+            <p class="text-xs text-gray-300 mt-2 leading-relaxed m-0">
+              Catálogo de 18 especies tóxicas (Brachiaria, Orejero, Helecho macho, Palicourea, Ricino), toxinas, signos clínicos, antídotos y quiz en campo.
+            </p>
+          </div>
+          <div class="flex items-center justify-between pt-3 border-t border-white/5 text-xs font-semibold text-emerald-400">
+            <span>Consultar Guía</span>
+            <span>→</span>
+          </div>
+        </a>
+
+        <!-- 8. Cronograma Sanitario -->
+        <a href="sanitario.html" class="feature-card glass hud-card rounded-2xl p-6 border border-[var(--border)] space-y-4 no-underline text-inherit block group">
+          <div class="flex justify-between items-start">
+            <div class="w-12 h-12 rounded-2xl bg-blue-500/20 border border-blue-500/40 flex items-center justify-center text-2xl">
+              📋
+            </div>
+            <span class="badge-tag bg-blue-500/20 text-blue-300 border border-blue-500/30">Bioseguridad</span>
+          </div>
+          <div>
+            <h3 class="display text-lg font-bold text-white group-hover:text-blue-300 transition m-0">Cronograma Sanitario Inteligente</h3>
+            <p class="text-xs text-gray-300 mt-2 leading-relaxed m-0">
+              Planes de vacunación oficial obligatoria (Aftosa, Brucelosis, Rabia), desparasitación estratégica y emisión de certificados de Buenas Prácticas Ganaderas.
+            </p>
+          </div>
+          <div class="flex items-center justify-between pt-3 border-t border-white/5 text-xs font-semibold text-blue-400">
+            <span>Ver Plan Sanitario</span>
+            <span>→</span>
+          </div>
+        </a>
+
+        <!-- 9. Calculadoras Clínicas & Zootécnicas -->
+        <a href="calculadoras.html" class="feature-card glass hud-card rounded-2xl p-6 border border-[var(--border)] space-y-4 no-underline text-inherit block group">
+          <div class="flex justify-between items-start">
+            <div class="w-12 h-12 rounded-2xl bg-teal-500/20 border border-teal-500/40 flex items-center justify-center text-2xl">
+              📐
+            </div>
+            <span class="badge-tag bg-teal-500/20 text-teal-300 border border-teal-500/30">Precisión</span>
+          </div>
+          <div>
+            <h3 class="display text-lg font-bold text-white group-hover:text-teal-300 transition m-0">Calculadoras & Fórmulas</h3>
+            <p class="text-xs text-gray-300 mt-2 leading-relaxed m-0">
+              Fluidoterapia por deshidratación (gotas/min y mL/h), dosificación de fármacos, balanceador de Cuadrado de Pearson, aforo UGM, FCR/GDP y calostro Brix.
+            </p>
+          </div>
+          <div class="flex items-center justify-between pt-3 border-t border-white/5 text-xs font-semibold text-teal-400">
+            <span>Usar Calculadoras</span>
+            <span>→</span>
+          </div>
+        </a>
+
+        <!-- 10. Cuaderno de Campo SOAP -->
+        <a href="cuaderno.html" class="feature-card glass hud-card rounded-2xl p-6 border border-[var(--border)] space-y-4 no-underline text-inherit block group">
+          <div class="flex justify-between items-start">
+            <div class="w-12 h-12 rounded-2xl bg-purple-500/20 border border-purple-500/40 flex items-center justify-center text-2xl">
+              📓
+            </div>
+            <span class="badge-tag bg-purple-500/20 text-purple-300 border border-purple-500/30">Bitácora</span>
+          </div>
+          <div>
+            <h3 class="display text-lg font-bold text-white group-hover:text-purple-300 transition m-0">Cuaderno de Campo (Bitácora SOAP)</h3>
+            <p class="text-xs text-gray-300 mt-2 leading-relaxed m-0">
+              Registro estandarizado de historias clínicas hospitalarias y de campo bajo metodología SOAP (Subjetivo, Objetivo, Análisis, Plan) con exportación.
+            </p>
+          </div>
+          <div class="flex items-center justify-between pt-3 border-t border-white/5 text-xs font-semibold text-purple-400">
+            <span>Abrir Bitácora</span>
+            <span>→</span>
+          </div>
+        </a>
+
+        <!-- 11. Granja Virtual 3D -->
+        <a href="granja.html" class="feature-card glass hud-card rounded-2xl p-6 border border-[var(--border)] space-y-4 no-underline text-inherit block group">
+          <div class="flex justify-between items-start">
+            <div class="w-12 h-12 rounded-2xl bg-purple-500/20 border border-purple-500/40 flex items-center justify-center text-2xl">
+              🐾
+            </div>
+            <span class="badge-tag bg-purple-500/20 text-purple-300 border border-purple-500/30">Entorno 3D</span>
+          </div>
+          <div>
+            <h3 class="display text-lg font-bold text-white group-hover:text-purple-300 transition m-0">Granja Escuela Virtual 3D</h3>
+            <p class="text-xs text-gray-300 mt-2 leading-relaxed m-0">
+              Inspección interactiva de ejemplares del hato (vacas, caballos, ovejas, cerdos), navegación de cámaras en potreros, establos y comederos, y censo en tiempo real.
+            </p>
+          </div>
+          <div class="flex items-center justify-between pt-3 border-t border-white/5 text-xs font-semibold text-purple-400">
+            <span>Visitar Granja 3D</span>
+            <span>→</span>
+          </div>
+        </a>
+
+        <!-- 12. Nutrición & Formulación -->
+        <a href="nutricion.html" class="feature-card glass hud-card rounded-2xl p-6 border border-[var(--border)] space-y-4 no-underline text-inherit block group">
+          <div class="flex justify-between items-start">
+            <div class="w-12 h-12 rounded-2xl bg-amber-500/20 border border-amber-500/40 flex items-center justify-center text-2xl">
+              🌾
+            </div>
+            <span class="badge-tag bg-amber-500/20 text-amber-300 border border-amber-500/30">Bromatología</span>
+          </div>
+          <div>
+            <h3 class="display text-lg font-bold text-white group-hover:text-amber-300 transition m-0">Estación de Nutrición & Raciones</h3>
+            <p class="text-xs text-gray-300 mt-2 leading-relaxed m-0">
+              Formulación bromatológica de raciones TMR para bovinos, equinos, cerdos y ovinos con balances de Proteína Cruda, Energía (Mcal), Fibra FDN y costos diarios.
+            </p>
+          </div>
+          <div class="flex items-center justify-between pt-3 border-t border-white/5 text-xs font-semibold text-amber-400">
+            <span>Formular Ración</span>
+            <span>→</span>
+          </div>
+        </a>
+
+      </div>
     </section>
 
-    <!-- ==================== 5. PESTAÑA: CASOS UNIVERSITARIOS ==================== -->
-    <section id="tab-cases" class="hidden">
-      <div id="caseModuleContainer"></div>
+    <!-- Sección de Competencias & Metodología Docente -->
+    <section class="glass hud-card rounded-3xl p-6 sm:p-8 border border-[var(--border)] space-y-4">
+      <div class="flex flex-wrap justify-between items-center gap-3 border-b border-white/10 pb-3">
+        <h3 class="display text-lg font-bold text-white m-0">Competencias Profesionales Evaluadas</h3>
+        <span class="mono text-xs text-emerald-400">Rúbrica Universitaria Basada en Evidencia</span>
+      </div>
+
+      <div class="grid grid-cols-2 sm:grid-cols-4 gap-3 text-xs">
+        <div class="p-3.5 rounded-xl bg-black/40 border border-white/5 space-y-1">
+          <b class="text-emerald-300 block">🌿 Manejo de Pasturas</b>
+          <p class="text-gray-400 text-[11px] m-0">Diagnóstico de fertilidad, encalado, aforo de biomasa y plantas tóxicas.</p>
+        </div>
+        <div class="p-3.5 rounded-xl bg-black/40 border border-white/5 space-y-1">
+          <b class="text-blue-300 block">🩺 Semiología Veterinaria</b>
+          <p class="text-gray-400 text-[11px] m-0">Constantes vitales, condición corporal BCS, mucosas FAMACHA e hidratación.</p>
+        </div>
+        <div class="p-3.5 rounded-xl bg-black/40 border border-white/5 space-y-1">
+          <b class="text-amber-300 block">💊 Terapéutica & Farmacopea</b>
+          <p class="text-gray-400 text-[11px] m-0">Cálculo de dosis exactas, vías inyectables (ID, SC, IM, IV) y tiempos de retiro.</p>
+        </div>
+        <div class="p-3.5 rounded-xl bg-black/40 border border-white/5 space-y-1">
+          <b class="text-purple-300 block">⚖️ Bromatología Aplicada</b>
+          <p class="text-gray-400 text-[11px] m-0">Balance de energía, proteína y fibra para prevención de acidosis ruminal.</p>
+        </div>
+      </div>
     </section>
 
   </main>
 
   <!-- Footer Científico -->
-  <footer class="max-w-7xl mx-auto px-4 pb-8 text-center text-xs text-[var(--muted)] border-t border-[var(--border)] pt-4">
-    🧬 ZOOTECNIA 3D: Granja Escuela Virtual · Diseñado para la docencia universitaria en Ciencias Agropecuarias y Medicina Veterinaria.
+  <footer class="max-w-7xl mx-auto px-4 pb-10 text-center text-xs text-[var(--muted)] border-t border-[var(--border)] pt-5">
+    🧬 VET & ZOO LAB — Plataforma Universitaria Digital para Ciencias Agropecuarias y Medicina Veterinaria.
   </footer>
 
-  <!-- Script Bootstrap ES6 Modules -->
-  <script type="module" src="js/app.js"></script>
+  <!-- Bootstrap Script -->
+  <script type="module">
+    import { SharedNav } from "./js/ui/SharedNav.js";
+    window.addEventListener("DOMContentLoaded", () => {
+      new SharedNav("home");
+    });
+  </script>
 </body>
 </html>

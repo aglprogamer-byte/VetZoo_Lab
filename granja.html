@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Granja Escuela Virtual 3D | Vet & Zoo Lab</title>
+  <meta name="description" content="Entorno 3D interactivo para inspección y etología animal de bovinos, equinos, ovinos y porcinos en campo.">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🐄</text></svg>">
+
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600;700&family=Inter:wght@400;500;600;700;800&family=Space+Grotesk:wght@600;700;800&display=swap" rel="stylesheet">
+
+  <!-- Tailwind CSS -->
+  <script src="https://cdn.tailwindcss.com"></script>
+
+  <!-- Three.js r128 & GLTFLoader -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/loaders/GLTFLoader.js"></script>
+
+  <!-- Custom Styles -->
+  <link rel="stylesheet" href="css/styles.css">
+</head>
+
+<body>
+  <!-- Contenedor Toast -->
+  <div id="toast" class="fixed right-4 top-4 z-50 max-w-sm space-y-2"></div>
+
+  <!-- Barra de Navegación Global -->
+  <header class="max-w-7xl mx-auto px-4 pt-4" id="sharedNavContainer"></header>
+
+  <!-- Contenedor Principal de la Granja 3D -->
+  <main class="max-w-7xl mx-auto px-4 pt-4 pb-16">
+    <div class="grid lg:grid-cols-5 gap-5">
+      
+      <!-- Columna Lateral: Censo de Animales y Navegación de Zonas -->
+      <aside class="lg:col-span-2 space-y-4">
+        <!-- Censo de Animales -->
+        <div class="glass hud-card rounded-2xl p-4 sm:p-5 space-y-3">
+          <div class="flex justify-between items-center border-b border-[var(--border)] pb-2.5">
+            <h2 class="display font-bold text-sm text-white flex items-center gap-1.5 m-0">
+              <span>🐾</span> Censo de Animales del Hato
+            </h2>
+            <span class="mono text-[10px] text-emerald-400 font-semibold uppercase">4 Ejemplares</span>
+          </div>
+
+          <div class="space-y-2" id="animalsRosterList">
+            <!-- Vaca #017 -->
+            <div class="animal-card btn p-3 rounded-xl border border-[var(--border)] bg-black/30 hover:bg-white/5 flex items-center justify-between" data-animal-id="cow_017">
+              <div class="flex items-center gap-2.5 pointer-events-none">
+                <span class="text-2xl">🐄</span>
+                <div>
+                  <b class="text-xs text-white block">VACA #017 — Margarita</b>
+                  <span class="text-[10px] text-[var(--muted)] mono">Holstein · 525 kg · Lactancia</span>
+                </div>
+              </div>
+              <div class="text-right pointer-events-none">
+                <span class="mono text-xs text-emerald-400 font-bold block">23.5 L/d</span>
+                <span class="mono text-[9px] text-gray-400">BCS 3.25</span>
+              </div>
+            </div>
+
+            <!-- Caballo #004 -->
+            <div class="animal-card btn p-3 rounded-xl border border-[var(--border)] bg-black/30 hover:bg-white/5 flex items-center justify-between" data-animal-id="horse_004">
+              <div class="flex items-center gap-2.5 pointer-events-none">
+                <span class="text-2xl">🐎</span>
+                <div>
+                  <b class="text-xs text-white block">EQUINO #004 — Relámpago</b>
+                  <span class="text-[10px] text-[var(--muted)] mono">Criollo · 460 kg · Deporte</span>
+                </div>
+              </div>
+              <div class="text-right pointer-events-none">
+                <span class="mono text-xs text-blue-300 font-bold block">Salud 98%</span>
+                <span class="mono text-[9px] text-gray-400">BCS 3.5</span>
+              </div>
+            </div>
+
+            <!-- Oveja #031 -->
+            <div class="animal-card btn p-3 rounded-xl border border-[var(--border)] bg-black/30 hover:bg-white/5 flex items-center justify-between" data-animal-id="sheep_031">
+              <div class="flex items-center gap-2.5 pointer-events-none">
+                <span class="text-2xl">🐑</span>
+                <div>
+                  <b class="text-xs text-white block">OVINO #031 — Blanquita</b>
+                  <span class="text-[10px] text-[var(--muted)] mono">Hampshire · 46 kg · Gestación</span>
+                </div>
+              </div>
+              <div class="text-right pointer-events-none">
+                <span class="mono text-xs text-amber-300 font-bold block">Día 45 Gest.</span>
+                <span class="mono text-[9px] text-gray-400">BCS 3.0</span>
+              </div>
+            </div>
+
+            <!-- Cerdo #088 -->
+            <div class="animal-card btn p-3 rounded-xl border border-[var(--border)] bg-black/30 hover:bg-white/5 flex items-center justify-between" data-animal-id="pig_088">
+              <div class="flex items-center gap-2.5 pointer-events-none">
+                <span class="text-2xl">🐖</span>
+                <div>
+                  <b class="text-xs text-white block">PORCINO #088 — Tomy</b>
+                  <span class="text-[10px] text-[var(--muted)] mono">Landrace · 36.5 kg · Crecimiento</span>
+                </div>
+              </div>
+              <div class="text-right pointer-events-none">
+                <span class="mono text-xs text-purple-300 font-bold block">FCR 2.65</span>
+                <span class="mono text-[9px] text-gray-400">BCS 3.25</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Zonas de la Granja -->
+        <div class="glass hud-card rounded-2xl p-4 space-y-2 text-xs">
+          <div class="flex justify-between items-center mb-1">
+            <h3 class="font-bold text-white uppercase tracking-wider mono text-[11px] m-0">Navegación de Instalaciones</h3>
+            <span class="text-[10px] text-[var(--muted)]">VISTA DE CÁMARA</span>
+          </div>
+          <div class="grid grid-cols-2 gap-2" id="zonesNavGrid">
+            <button class="btn zone-btn p-2.5 rounded-xl bg-black/30 hover:bg-white/10 border border-[var(--border)] text-left" data-zone-id="overview">
+              <b class="text-white block pointer-events-none">🌐 Granja General</b>
+              <span class="text-[9px] text-[var(--muted)] pointer-events-none">Vista aérea total</span>
+            </button>
+            <button class="btn zone-btn p-2.5 rounded-xl bg-black/30 hover:bg-white/10 border border-[var(--border)] text-left" data-zone-id="pasture">
+              <b class="text-white block pointer-events-none">🌱 Potrero 1</b>
+              <span class="text-[9px] text-[var(--muted)] pointer-events-none">Área de pastoreo</span>
+            </button>
+            <button class="btn zone-btn p-2.5 rounded-xl bg-black/30 hover:bg-white/10 border border-[var(--border)] text-left" data-zone-id="stable">
+              <b class="text-white block pointer-events-none">🏠 Establo</b>
+              <span class="text-[9px] text-[var(--muted)] pointer-events-none">Manejo y corrales</span>
+            </button>
+            <button class="btn zone-btn p-2.5 rounded-xl bg-black/30 hover:bg-white/10 border border-[var(--border)] text-left" data-zone-id="feeder">
+              <b class="text-white block pointer-events-none">🥣 Comederos</b>
+              <span class="text-[9px] text-[var(--muted)] pointer-events-none">Alimentación</span>
+            </button>
+          </div>
+        </div>
+      </aside>
+
+      <!-- Columna Principal: Visor 3D -->
+      <section class="lg:col-span-3 space-y-4">
+        <div class="glass hud-card rounded-2xl p-4">
+          <div class="flex justify-between items-center mb-3">
+            <div>
+              <h2 class="display font-bold text-base text-white flex items-center gap-2 m-0">
+                <span>🌎</span> Entorno Virtual de Campo 3D
+              </h2>
+              <p class="text-xs text-[var(--muted)] mt-0.5 mb-0">Haz clic sobre cualquier animal o zona para interactuar y abrir su expediente.</p>
+            </div>
+            <div class="chip mono text-xs text-emerald-300 font-semibold">GRANJA ACTIVA</div>
+          </div>
+
+          <div id="sceneWrap">
+            <canvas id="scene3d"></canvas>
+            <div class="scene-label top-3 left-3 glass rounded-lg px-3 py-1.5 text-[11px] mono text-white">
+              🌿 SIMULADOR 3D DE CAMPO
+            </div>
+            <div class="scene-label bottom-3 left-3 glass rounded-lg px-3 py-1.5 text-xs text-[var(--muted)]">
+              <span>💡 Arrastra para orbitar · Rueda para zoom · Clic en animal para inspección.</span>
+            </div>
+          </div>
+        </div>
+      </section>
+    </div>
+  </main>
+
+  <!-- Footer Científico -->
+  <footer class="max-w-7xl mx-auto px-4 pb-8 text-center text-xs text-[var(--muted)] border-t border-[var(--border)] pt-4">
+    🐄 VET & ZOO LAB — Entorno 3D de Zootecnia, Etología & Censo Productivo.
+  </footer>
+
+  <!-- Script Bootstrap -->
+  <script type="module">
+    import { SharedNav } from "./js/ui/SharedNav.js";
+    import { Farm3D } from "./js/farm/Farm3D.js";
+    import { AnimalManager } from "./js/farm/AnimalManager.js";
+    import { store, ACTION_TYPES } from "./js/core/Store.js";
+
+    window.addEventListener("DOMContentLoaded", () => {
+      const nav = new SharedNav("granja");
+      const farm3D = new Farm3D("scene3d", { storeInstance: store });
+      const animalManager = new AnimalManager(farm3D, { storeInstance: store });
+
+      // Click en tarjetas de animales
+      document.addEventListener("click", (e) => {
+        const animalCard = e.target.closest("[data-animal-id]");
+        if (animalCard) {
+          const animalId = animalCard.dataset.animalId;
+          const animal = store.get("animals")[animalId];
+          if (animal) {
+            store.dispatch(ACTION_TYPES.SELECT_ANIMAL, { animalId });
+            nav.animalModal.open(animal);
+          }
+        }
+
+        const zoneBtn = e.target.closest("[data-zone-id]");
+        if (zoneBtn) {
+          const zoneId = zoneBtn.dataset.zoneId;
+          farm3D.setZone(zoneId);
+        }
+      });
+    });
+  </script>
+</body>
+</html>
