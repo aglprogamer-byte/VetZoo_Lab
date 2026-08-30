@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Zootecnia 3D — Granja Escuela Virtual & Laboratorio Universitario</title>
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🧬</text></svg>">
+
+  <!-- Google Fonts: Inter, Space Grotesk, IBM Plex Mono -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600;700&family=Inter:wght@400;500;600;700&family=Space+Grotesk:wght@600;700&display=swap" rel="stylesheet">
+
+  <!-- Tailwind CSS -->
+  <script src="https://cdn.tailwindcss.com"></script>
+
+  <!-- Three.js r128 & GLTFLoader -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/loaders/GLTFLoader.js"></script>
+
+  <!-- Custom Scientific Styles -->
+  <link rel="stylesheet" href="css/styles.css">
+</head>
+
+<body>
+  <!-- Contenedor de Alertas Toast -->
+  <div id="toast" class="fixed right-4 top-4 z-50 max-w-sm space-y-2"></div>
+
+  <!-- Contenedores de Modales Universitarios -->
+  <div id="animalCardModalContainer" class="hidden"></div>
+  <div id="studentProfileModalContainer" class="hidden"></div>
+
+  <!-- Cabecera y HUD Principal -->
+  <header class="max-w-7xl mx-auto px-4 pt-4" id="hudContainer"></header>
+
+  <!-- Contenedor Principal de la Granja Escuela -->
+  <main class="max-w-7xl mx-auto px-4 pt-3 pb-12">
+
+    <!-- ==================== 1. PESTAÑA: VISTA GRANJA 3D ==================== -->
+    <section id="tab-overview" class="grid lg:grid-cols-5 gap-4">
+      <!-- Columna Lateral: Censo de Animales y Acciones de Finca -->
+      <aside class="lg:col-span-2 space-y-4">
+        <!-- Censo de Animales de la Granja Escuela -->
+        <div class="glass hud-card rounded-2xl p-4 space-y-3">
+          <div class="flex justify-between items-center border-b border-[var(--border)] pb-2.5">
+            <h2 class="display font-bold text-sm text-white flex items-center gap-1.5">
+              <span>🐾</span> Censo de Animales del Hato
+            </h2>
+            <span class="mono text-[10px] text-emerald-400 font-semibold uppercase">4 Ejemplares</span>
+          </div>
+
+          <!-- Lista de Animales Interactivos -->
+          <div class="space-y-2" id="animalsRosterList">
+            <!-- Vaca #017 -->
+            <div class="animal-card btn p-3 rounded-xl border border-[var(--border)] bg-black/30 hover:bg-white/5 flex items-center justify-between" data-animal-id="cow_017">
+              <div class="flex items-center gap-2.5 pointer-events-none">
+                <span class="text-2xl">🐄</span>
+                <div>
+                  <b class="text-xs text-white block">VACA #017 — Margarita</b>
+                  <span class="text-[10px] text-[var(--muted)] mono">Holstein · 525 kg · Lactancia</span>
+                </div>
+              </div>
+              <div class="text-right pointer-events-none">
+                <span class="mono text-xs text-emerald-400 font-bold block">23.5 L/d</span>
+                <span class="mono text-[9px] text-gray-400">BCS 3.25</span>
+              </div>
+            </div>
+
+            <!-- Caballo #004 -->
+            <div class="animal-card btn p-3 rounded-xl border border-[var(--border)] bg-black/30 hover:bg-white/5 flex items-center justify-between" data-animal-id="horse_004">
+              <div class="flex items-center gap-2.5 pointer-events-none">
+                <span class="text-2xl">🐎</span>
+                <div>
+                  <b class="text-xs text-white block">EQUINO #004 — Relámpago</b>
+                  <span class="text-[10px] text-[var(--muted)] mono">Criollo · 460 kg · Deporte</span>
+                </div>
+              </div>
+              <div class="text-right pointer-events-none">
+                <span class="mono text-xs text-blue-300 font-bold block">Salud 98%</span>
+                <span class="mono text-[9px] text-gray-400">BCS 3.5</span>
+              </div>
+            </div>
+
+            <!-- Oveja #031 -->
+            <div class="animal-card btn p-3 rounded-xl border border-[var(--border)] bg-black/30 hover:bg-white/5 flex items-center justify-between" data-animal-id="sheep_031">
+              <div class="flex items-center gap-2.5 pointer-events-none">
+                <span class="text-2xl">🐑</span>
+                <div>
+                  <b class="text-xs text-white block">OVINO #031 — Blanquita</b>
+                  <span class="text-[10px] text-[var(--muted)] mono">Hampshire · 46 kg · Gestación</span>
+                </div>
+              </div>
+              <div class="text-right pointer-events-none">
+                <span class="mono text-xs text-amber-300 font-bold block">Día 45 Gest.</span>
+                <span class="mono text-[9px] text-gray-400">BCS 3.0</span>
+              </div>
+            </div>
+
+            <!-- Cerdo #088 -->
+            <div class="animal-card btn p-3 rounded-xl border border-[var(--border)] bg-black/30 hover:bg-white/5 flex items-center justify-between" data-animal-id="pig_088">
+              <div class="flex items-center gap-2.5 pointer-events-none">
+                <span class="text-2xl">🐖</span>
+                <div>
+                  <b class="text-xs text-white block">PORCINO #088 — Tomy</b>
+                  <span class="text-[10px] text-[var(--muted)] mono">Landrace · 36.5 kg · Crecimiento</span>
+                </div>
+              </div>
+              <div class="text-right pointer-events-none">
+                <span class="mono text-xs text-purple-300 font-bold block">FCR 2.65</span>
+                <span class="mono text-[9px] text-gray-400">BCS 3.25</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Panel de Zonas de la Granja -->
+        <div class="glass hud-card rounded-2xl p-4 space-y-2 text-xs">
+          <div class="flex justify-between items-center mb-1">
+            <h3 class="font-bold text-white uppercase tracking-wider mono text-[11px]">Navegación de Instalaciones</h3>
+            <span class="text-[10px] text-[var(--muted)]">VISTA DE CÁMARA</span>
+          </div>
+          <div class="grid grid-cols-2 gap-2" id="zonesNavGrid">
+            <button class="btn zone-btn p-2 rounded-xl bg-black/30 hover:bg-white/10 border border-[var(--border)] text-left" data-zone-id="overview">
+              <b class="text-white block pointer-events-none">🌐 Granja General</b>
+              <span class="text-[9px] text-[var(--muted)] pointer-events-none">Vista aérea total</span>
+            </button>
+            <button class="btn zone-btn p-2 rounded-xl bg-black/30 hover:bg-white/10 border border-[var(--border)] text-left" data-zone-id="pasture">
+              <b class="text-white block pointer-events-none">🌱 Potrero 1</b>
+              <span class="text-[9px] text-[var(--muted)] pointer-events-none">Área de pastoreo</span>
+            </button>
+            <button class="btn zone-btn p-2 rounded-xl bg-black/30 hover:bg-white/10 border border-[var(--border)] text-left" data-zone-id="stable">
+              <b class="text-white block pointer-events-none">🏠 Establo</b>
+              <span class="text-[9px] text-[var(--muted)] pointer-events-none">Manejo y corrales</span>
+            </button>
+            <button class="btn zone-btn p-2 rounded-xl bg-black/30 hover:bg-white/10 border border-[var(--border)] text-left" data-zone-id="feeder">
+              <b class="text-white block pointer-events-none">🥣 Comederos</b>
+              <span class="text-[9px] text-[var(--muted)] pointer-events-none">Alimentación</span>
+            </button>
+          </div>
+        </div>
+      </aside>
+
+      <!-- Columna Principal: Visor 3D de la Granja -->
+      <section class="lg:col-span-3 space-y-4">
+        <div class="glass hud-card rounded-2xl p-4">
+          <div class="flex justify-between items-center mb-3">
+            <div>
+              <h2 class="display font-bold text-base text-white flex items-center gap-2">
+                <span>🌎</span> Entorno Virtual de Campo 3D
+              </h2>
+              <p class="text-xs text-[var(--muted)]">Haz clic sobre cualquier animal o zona para interactuar y abrir su expediente.</p>
+            </div>
+            <div class="chip mono text-xs text-emerald-300 font-semibold">GRANJA ACTIVA</div>
+          </div>
+
+          <div id="sceneWrap">
+            <canvas id="scene3d"></canvas>
+            <div class="scene-label top-3 left-3 glass rounded-lg px-3 py-1.5 text-[11px] mono text-white">
+              🌿 SIMULADOR 3D DE CAMPO
+            </div>
+            <div class="scene-label bottom-3 left-3 glass rounded-lg px-3 py-1.5 text-xs text-[var(--muted)]">
+              <span>💡 Arrastra para orbitar · Rueda para zoom · Clic en animal para inspección.</span>
+            </div>
+          </div>
+        </div>
+      </section>
+    </section>
+
+    <!-- ==================== 2. PESTAÑA: ESTACIÓN DE NUTRICIÓN ==================== -->
+    <section id="tab-nutrition" class="hidden">
+      <div class="glass hud-card rounded-2xl p-6" id="nutritionLabContainer"></div>
+    </section>
+
+    <!-- ==================== 3. PESTAÑA: CONSULTORIO & ANATOMÍA CLÍNICA ==================== -->
+    <section id="tab-clinic" class="hidden grid lg:grid-cols-5 gap-4">
+      <!-- Visor Anatómico e Histológico de Punción -->
+      <div class="lg:col-span-3 glass hud-card rounded-2xl p-5 space-y-3">
+        <div class="flex justify-between items-center">
+          <div>
+            <h3 class="display font-bold text-base text-white flex items-center gap-2">
+              <span>🔬</span> Corte Histológico & Simulador de Punción
+            </h3>
+            <p class="text-xs text-[var(--muted)]">Arrastra sobre el corte o ajusta los controles para posicionar el bisel en el plano anatómico exacto.</p>
+          </div>
+          <span class="chip mono text-xs font-bold text-emerald-300">PUNCIÓN EN VIVO</span>
+        </div>
+
+        <div id="anatomyWrap" class="rounded-2xl overflow-hidden border border-[var(--border)] bg-black/40 relative shadow-inner">
+          <canvas id="anatomy3d" style="width:100%;height:420px;display:block;"></canvas>
+        </div>
+
+        <div class="text-[11px] text-[var(--muted)] flex justify-between px-1">
+          <span>Capas: <b>Piel (ID 10-20°)</b> · <b>Subcutáneo (SC 35-55°)</b> · <b>Músculo (IM 75-90°)</b> · <b>Vena Yugular (IV 20-35°)</b></span>
+          <span class="mono text-emerald-400 font-semibold">Resolución Celular 2D/3D</span>
+        </div>
+      </div>
+
+      <!-- Controles de Procedimiento Semiológico y Punción -->
+      <div class="lg:col-span-2 glass hud-card rounded-2xl p-5" id="clinicalLabControls"></div>
+    </section>
+
+    <!-- ==================== 4. PESTAÑA: PASTOS Y FORRAJES ==================== -->
+    <section id="tab-pasture" class="hidden">
+      <div class="glass hud-card rounded-2xl p-6" id="pastureLabContainer"></div>
+    </section>
+
+    <!-- ==================== 5. PESTAÑA: CASOS UNIVERSITARIOS ==================== -->
+    <section id="tab-cases" class="hidden">
+      <div id="caseModuleContainer"></div>
+    </section>
+
+  </main>
+
+  <!-- Footer Científico -->
+  <footer class="max-w-7xl mx-auto px-4 pb-8 text-center text-xs text-[var(--muted)] border-t border-[var(--border)] pt-4">
+    🧬 ZOOTECNIA 3D: Granja Escuela Virtual · Diseñado para la docencia universitaria en Ciencias Agropecuarias y Medicina Veterinaria.
+  </footer>
+
+  <!-- Script Bootstrap ES6 Modules -->
+  <script type="module" src="js/app.js"></script>
+</body>
+</html>
