@@ -33,35 +33,6 @@
 
 ---
 
-## 🚀 Despliegue en GitHub Pages
-
-Este proyecto utiliza **JavaScript ES6 Vanilla**, **Three.js** y **Tailwind CSS**, por lo que **no requiere compilación ni Node.js en el servidor**. Es 100% estático y compatible de forma nativa con GitHub Pages.
-
-### Pasos para publicar en GitHub Pages:
-
-1. Inicializar git y hacer commit:
-   ```bash
-   git init
-   git add .
-   git commit -m "feat: Zootecnia 3D Granja Escuela Virtual v1.0"
-   ```
-
-2. Vincular el repositorio remoto y subir:
-   ```bash
-   git branch -M main
-   git remote add origin https://github.com/aglprogamer-byte/VetZoo_Lab.git
-   git push -u origin main
-   ```
-
-3. Activar GitHub Pages en el repositorio:
-   - Ir a **Settings** -> **Pages** en tu repositorio de GitHub.
-   - En **Source**, seleccionar la rama `main` y la carpeta `/ (root)`.
-   - Guardar (**Save**).
-   - En 1 o 2 minutos tu sitio estará en vivo en:  
-     `https://aglprogamer-byte.github.io/VetZoo_Lab/`
-
----
-
 ## 🛠️ Estructura del Código
 
 ```text
