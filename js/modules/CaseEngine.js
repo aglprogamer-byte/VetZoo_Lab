@@ -17,10 +17,12 @@ export const UNIVERSITY_CLINICAL_CASES = [
     species: "vaca",
     targetAnimalId: "cow_017",
     title: "Caída brusca de producción láctea y heces ácidas en lote de alta producción",
+    context: "El hato lechero presenta una caída del 22% en producción tras un incremento de almidón en la ración. El problema principal es la acidosis ruminal subaguda con baja fibra efectiva y exceso de carbohidratos fermentables.",
     anamnesis: {
       patient: "Vaca #017 'Margarita' (Holstein, 525 kg, 45 días en lactancia)",
       history: "El hato lechero presenta una caída del 22% en producción durante los últimos 6 días. El encargado aumentó el concentrado comercial a 12 kg/día para 'estimular el pico de leche'.",
       symptoms: "Apatía, reducción del 30% en tiempo de rumia, heces pastosas grado 1-2 con burbujas de gas y granos de maíz enteros sin digerir.",
+      dietIssue: "Aumento abrupto de maíz y concentrado sin reforzar la fibra efectiva ni el bicarbonato en la dieta.",
       vitals: { temp: "38.7 °C (Normal)", fc: "72 lpm", fr: "26 rpm", rumen: "1 movimiento cada 2 min (Hipomotilidad)", phRuminal: "5.3 (Acidótico)" }
     },
     labFindings: {
@@ -54,10 +56,12 @@ export const UNIVERSITY_CLINICAL_CASES = [
     species: "caballo",
     targetAnimalId: "horse_004",
     title: "Dolor visceral agudo, sudoración profusa e inquietud en caballo de deporte",
+    context: "Tras un esfuerzo intenso y una sobrecarga de avena fría, el equino presenta cólico espasmódico con distensión gaseosa y dolor visceral de moderada severidad.",
     anamnesis: {
       patient: "Equino #004 'Relámpago' (Criollo Colombiano, 460 kg, 5 años)",
       history: "Tras una jornada de entrenamiento intenso, el animal consumió agua muy fría y una ración abundante de avena en grano. Hace 2 horas inició con escarceo y revolcones.",
       symptoms: "Miradas continuas al flanco derecho, sudoración profusa en cuello y pecho, posición de caballo de madera (estirado), ausencia de borborigmos en cuadrante ileocecal.",
+      dietIssue: "Sobrecarga de avena y agua fría tras ejercicio intenso, con riesgo de timpanismo y alteración de motilidad intestinal.",
       vitals: { temp: "38.1 °C", fc: "68 lpm (Taquicardia por dolor)", fr: "28 rpm", tllc: "2.5 segundos", mucosas: "Congestivas / Enrojecidas" }
     },
     labFindings: {
@@ -90,10 +94,12 @@ export const UNIVERSITY_CLINICAL_CASES = [
     species: "vaca",
     targetAnimalId: "cow_017",
     title: "Síndrome respiratorio febril y estertores en ternero de recría",
+    context: "El lote de recría presenta varios terneros con tos húmeda y decaimiento tras el traslado por frío y estrés. El cuadro sugiere bronconeumonía bacteriana con compromiso alveolar profundo.",
     anamnesis: {
       patient: "Ternero #052 (Macho Holstein, 110 kg, 3 meses)",
       history: "Lote destetado hace 10 días y trasladado durante una tormenta fría. 4 terneros presentan tos húmeda y decaimiento.",
       symptoms: "Secreción nasal mucopurulenta bilateral, respiración abdominal disneica con cabeza extendida, tos frecuente al caminar.",
+      dietIssue: "Estrés de traslado y manejo en grupos recién destetados, sin reforzamiento inmunitario ni control de ambiente frío.",
       vitals: { temp: "40.6 °C (Hipertermia / Fiebre marcada)", fc: "96 lpm", fr: "54 rpm (Taquipnea)", auscultacion: "Estertores crepitantes y sibilancias en campos pulmonares craneo-ventrales." }
     },
     labFindings: {
@@ -125,10 +131,12 @@ export const UNIVERSITY_CLINICAL_CASES = [
     species: "vaca",
     targetAnimalId: "cow_017",
     title: "Vaca de alta producción caída en decúbito esternal a las 24 horas del parto",
+    context: "La vaca cae en decúbito a las 24 horas del parto con hipotermia, atonía ruminal y midriasis. El patrón clínico apunta a una depleción de calcio con compromiso neuromuscular severo.",
     anamnesis: {
       patient: "Vaca #008 'Paloma' (Jersey pura, 440 kg, 4° parto)",
       history: "Parió un ternero vigoroso ayer en la madrugada. En el ordeño de la mañana produjo 18 L de calostro. Hace 2 horas no logra levantarse.",
       symptoms: "Decúbito esternal con la cabeza inclinada hacia el flanco (postura en 'S'), extremidades y orejas frías al tacto, atonía ruminal completa, pupilas dilatadas (midriasis).",
+      dietIssue: "Exceso de producción de calostro y alta demanda de calcio al parto, con depleción metabólica tras el inicio de lactancia intensa.",
       vitals: { temp: "37.2 °C (Hipotermia)", fc: "48 lpm (Sonidos cardíacos apagados y débiles)", fr: "16 rpm", heces: "Ausencia de defecación (Atonía rectal)." }
     },
     labFindings: {
@@ -160,10 +168,12 @@ export const UNIVERSITY_CLINICAL_CASES = [
     species: "oveja",
     targetAnimalId: "sheep_031",
     title: "Anemia marcada, edema submandibular y pérdida de peso en ovejas en pastoreo",
+    context: "El rebaño presenta anemia severa y edema facial con historial de pastoreo continuo en terreno húmedo. El patrón clínico responde a una hipoparasitosis con hematofagia intensa.",
     anamnesis: {
       patient: "Oveja #031 'Blanquita' (Hampshire Down, 46 kg)",
       history: "Pastoreo continuo en potrero bajo y húmedo durante 4 meses sin rotación ni desparasitación.",
       symptoms: "Edema submandibular frío indoloro (mandíbula en botella), debilidad al pastoreo, mucosas conjuntivales blancas (FAMACHA 5).",
+      dietIssue: "Pastoreo continuo en pradera húmeda y sin rotación, con alta exposición a larvas infectantes y baja resistencia nutricional.",
       vitals: { temp: "38.9 °C", fc: "92 lpm (Taquicardia compensatoria)", fr: "28 rpm", mucosas: "Blanco porcelana (Anemia severa)" }
     },
     labFindings: {

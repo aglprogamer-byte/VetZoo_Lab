@@ -158,6 +158,9 @@ export class ApplicationBootstrap {
     if (!container) return;
 
     const c = caseEngine.activeCase;
+    const rubric = c?.rubricPoints || { diagnosis: 40, treatment: 40, reasoning: 20 };
+    const contextText = c?.context || c?.anamnesis?.history || "Caso clínico sin contexto adicional.";
+    const dietIssueText = c?.anamnesis?.dietIssue || "No disponible.";
 
     container.innerHTML = `
       <div class="glass hud-card rounded-2xl p-6 border border-amber-500/30 space-y-6">
@@ -181,9 +184,9 @@ export class ApplicationBootstrap {
           <h4 class="text-xs font-bold text-amber-300 uppercase tracking-wider mono flex items-center gap-1.5">
             <span>🔍</span> 1. Contexto & Hallazgos Clínicos
           </h4>
-          <p class="text-xs text-gray-200 leading-relaxed">${c.context}</p>
+          <p class="text-xs text-gray-200 leading-relaxed">${contextText}</p>
           <div class="text-[11px] text-[var(--muted)] pt-2 border-t border-[var(--border)]">
-            <b>Hallazgos semiológicos:</b> ${c.anamnesis.symptoms} | <b>Dieta actual:</b> ${c.anamnesis.dietIssue}
+            <b>Hallazgos semiológicos:</b> ${c.anamnesis.symptoms} | <b>Dieta actual:</b> ${dietIssueText}
           </div>
         </div>
 
@@ -213,7 +216,7 @@ export class ApplicationBootstrap {
         </div>
 
         <div class="flex justify-between items-center pt-2">
-          <span class="text-xs text-[var(--muted)]">Rúbrica de evaluación: Diagnóstico (30%) · Nutrición (35%) · Clínica (20%) · Economía (15%)</span>
+          <span class="text-xs text-[var(--muted)]">Rúbrica de evaluación: Diagnóstico (${rubric.diagnosis} pts) · Terapéutica (${rubric.treatment} pts) · Razonamiento (${rubric.reasoning} pts)</span>
           <button id="btnSubmitCaseReport" class="btn px-6 py-3 rounded-xl font-bold text-sm bg-gradient-to-r from-emerald-600 to-blue-600 text-white shadow-lg flex items-center gap-2">
             <span>📊</span> Evaluar Caso & Emitir Informe
           </button>
