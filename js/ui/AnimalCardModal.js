@@ -10,6 +10,12 @@ export class AnimalCardModal {
   constructor(modalId, { storeInstance = store } = {}) {
     this.modal = document.getElementById(modalId);
     this.store = storeInstance;
+    this.lastFocusedElement = null;
+    this.handleEscapeKey = (event) => {
+      if (event.key === "Escape" && this.modal && !this.modal.classList.contains("hidden")) {
+        this.close();
+      }
+    };
     this.init();
   }
 
@@ -21,10 +27,14 @@ export class AnimalCardModal {
   open(animal) {
     if (!this.modal || !animal) return;
 
+    this.lastFocusedElement = document.activeElement;
     this.modal.classList.remove("hidden");
+    this.modal.setAttribute("role", "dialog");
+    this.modal.setAttribute("aria-modal", "true");
+    this.modal.setAttribute("aria-label", "Ficha del animal");
     this.modal.innerHTML = `
       <div class="fixed inset-0 bg-black/75 backdrop-blur-md flex items-center justify-center p-4 z-50">
-        <div class="glass hud-card w-full max-w-2xl max-h-[90vh] overflow-y-auto rounded-2xl border border-[var(--border)] p-6 space-y-5">
+        <div class="glass hud-card w-full max-w-2xl max-h-[90vh] overflow-y-auto rounded-2xl border border-[var(--border)] p-6 space-y-5 modal-panel" tabindex="-1">
           <!-- Encabezado de la Ficha -->
           <div class="flex justify-between items-start border-b border-[var(--border)] pb-4">
             <div>
@@ -34,7 +44,7 @@ export class AnimalCardModal {
               </div>
               <p class="text-xs text-[var(--muted)] mono mt-0.5">Expediente Clínico & Registro de Producción Zootécnica</p>
             </div>
-            <button id="btnCloseAnimalModal" class="btn p-2 rounded-xl text-gray-400 hover:text-white bg-white/5 hover:bg-white/10">
+            <button id="btnCloseAnimalModal" class="btn p-2 rounded-xl text-gray-400 hover:text-white bg-white/5 hover:bg-white/10" type="button" aria-label="Cerrar ficha del animal">
               ✕
             </button>
           </div>
@@ -117,13 +127,19 @@ export class AnimalCardModal {
 
           <!-- Botones de Acción -->
           <div class="flex justify-end gap-2 pt-2">
-            <button id="btnExaminarAnimal" class="btn px-4 py-2 rounded-xl text-xs font-bold bg-emerald-700 hover:bg-emerald-600 text-white flex items-center gap-1.5">
-              <span>🩺</span> Llevar a Examen Clínico
+            <button id="btnExaminarAnimal" class="btn px-4 py-2 rounded-xl text-xs font-bold bg-emerald-700 hover:bg-emerald-600 text-white flex items-center gap-1.5" type="button" aria-label="Llevar al examen clínico">
+              <span aria-hidden="true">🩺</span> Llevar a Examen Clínico
             </button>
           </div>
         </div>
       </div>
     `;
+
+    document.removeEventListener("keydown", this.handleEscapeKey);
+    document.addEventListener("keydown", this.handleEscapeKey);
+
+    const firstFocusable = this.modal.querySelector("button, [href], input, select, textarea, [tabindex]:not([tabindex='-1'])");
+    if (firstFocusable) firstFocusable.focus();
 
     document.getElementById("btnCloseAnimalModal").onclick = () => this.close();
     document.getElementById("btnExaminarAnimal").onclick = () => {
@@ -134,8 +150,15 @@ export class AnimalCardModal {
 
   close() {
     if (this.modal) {
+      document.removeEventListener("keydown", this.handleEscapeKey);
       this.modal.classList.add("hidden");
       this.modal.innerHTML = "";
+      this.modal.removeAttribute("role");
+      this.modal.removeAttribute("aria-modal");
+      this.modal.removeAttribute("aria-label");
+      if (this.lastFocusedElement && typeof this.lastFocusedElement.focus === "function") {
+        this.lastFocusedElement.focus();
+      }
     }
   }
 }

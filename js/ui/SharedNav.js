@@ -107,31 +107,31 @@ export class SharedNav {
           </button>
 
           <!-- Botón Menú Móvil -->
-          <button id="btnToggleMobileMenu" class="btn lg:hidden p-2 rounded-xl border border-[var(--border)] bg-black/40 text-gray-300 hover:text-white" aria-label="Abrir Menú">
+          <button id="btnToggleMobileMenu" class="btn lg:hidden p-2 rounded-xl border border-[var(--border)] bg-black/40 text-gray-300 hover:text-white" aria-label="Abrir menú de navegación" aria-expanded="false" aria-controls="mobileMenuDrawer">
             <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path></svg>
           </button>
         </div>
       </div>
 
       <!-- Barra de Navegación de Escritorio con scroll suave -->
-      <nav class="hidden lg:flex gap-1.5 mt-3 overflow-x-auto pb-1" id="desktopNavLinks">
+      <nav class="hidden lg:flex gap-1.5 mt-3 overflow-x-auto pb-1" id="desktopNavLinks" aria-label="Navegación principal">
         ${pages.map(p => {
           const isActive = p.id === this.activePage;
           return `
-            <a href="${p.href}" class="nav-link btn px-3 py-2 rounded-xl text-xs font-semibold border whitespace-nowrap ${isActive ? 'bg-emerald-950/70 text-emerald-300 border-emerald-500/50 shadow-md ring-1 ring-emerald-500/30' : 'bg-black/30 text-gray-400 border-[var(--border)] hover:bg-white/5 hover:text-white'} flex items-center gap-1.5 no-underline">
-              <span>${p.icon}</span> ${p.label}
+            <a href="${p.href}" class="nav-link btn px-3 py-2 rounded-xl text-xs font-semibold border whitespace-nowrap ${isActive ? 'bg-emerald-950/70 text-emerald-300 border-emerald-500/50 shadow-md ring-1 ring-emerald-500/30' : 'bg-black/30 text-gray-400 border-[var(--border)] hover:bg-white/5 hover:text-white'} flex items-center gap-1.5 no-underline" aria-current="${isActive ? 'page' : 'false'}" aria-label="Ir a ${p.label}">
+              <span aria-hidden="true">${p.icon}</span> ${p.label}
             </a>
           `;
         }).join("")}
       </nav>
 
       <!-- Menú Desplegable Móvil -->
-      <div id="mobileMenuDrawer" class="hidden lg:hidden glass hud-card rounded-2xl p-3 mt-2 border border-[var(--border)] grid grid-cols-2 gap-1.5 shadow-2xl">
+      <div id="mobileMenuDrawer" class="hidden lg:hidden glass hud-card rounded-2xl p-3 mt-2 border border-[var(--border)] grid grid-cols-2 gap-1.5 shadow-2xl" aria-label="Menú móvil">
         ${pages.map(p => {
           const isActive = p.id === this.activePage;
           return `
-            <a href="${p.href}" class="btn p-2 rounded-xl text-xs font-semibold border ${isActive ? 'bg-emerald-950/70 text-emerald-300 border-emerald-500/50' : 'bg-black/20 text-gray-300 border-white/5 hover:bg-white/5'} flex items-center gap-1.5 no-underline">
-              <span>${p.icon}</span> ${p.label}
+            <a href="${p.href}" class="btn p-2 rounded-xl text-xs font-semibold border ${isActive ? 'bg-emerald-950/70 text-emerald-300 border-emerald-500/50' : 'bg-black/20 text-gray-300 border-white/5 hover:bg-white/5'} flex items-center gap-1.5 no-underline" aria-current="${isActive ? 'page' : 'false'}" aria-label="Ir a ${p.label}">
+              <span aria-hidden="true">${p.icon}</span> ${p.label}
             </a>
           `;
         }).join("")}
@@ -163,10 +163,17 @@ export class SharedNav {
     const drawer = document.getElementById("mobileMenuDrawer");
     if (btnMenu && drawer) {
       btnMenu.onclick = () => {
-        drawer.classList.toggle("hidden");
+        const isHidden = drawer.classList.toggle("hidden");
+        btnMenu.setAttribute("aria-expanded", String(!isHidden));
+        btnMenu.setAttribute("aria-label", isHidden ? "Abrir menú de navegación" : "Cerrar menú de navegación");
         AudioFx.click();
       };
     }
+
+    document.querySelectorAll("#toast").forEach((toast) => {
+      toast.setAttribute("aria-live", "polite");
+      toast.setAttribute("aria-atomic", "true");
+    });
 
     const b24 = document.getElementById("btnNavAdvance24h");
     const b7d = document.getElementById("btnNavAdvance7d");

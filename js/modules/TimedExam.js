@@ -71,8 +71,8 @@ export class TimedExam {
         </div>
 
         <div class="pt-2">
-          <button id="btnStartTimedExam" class="btn px-8 py-3.5 rounded-xl bg-gradient-to-r from-rose-600 to-amber-600 hover:from-rose-500 hover:to-amber-500 text-white font-bold text-sm shadow-xl flex items-center gap-2 mx-auto">
-            <span>🔥</span> Iniciar Examen de Grado
+          <button id="btnStartTimedExam" class="btn px-8 py-3.5 rounded-xl bg-gradient-to-r from-rose-600 to-amber-600 hover:from-rose-500 hover:to-amber-500 text-white font-bold text-sm shadow-xl flex items-center gap-2 mx-auto" type="button" aria-label="Iniciar examen clínico cronometrado">
+            <span aria-hidden="true">🔥</span> Iniciar Examen de Grado
           </button>
         </div>
       </div>
@@ -145,7 +145,7 @@ export class TimedExam {
             <span class="text-2xl">⏱️</span>
             <div>
               <span class="text-[10px] mono text-gray-400 uppercase tracking-wider block">TIEMPO RESTANTE DE EXAMEN</span>
-              <div id="examTimerDigits" class="display text-2xl font-bold mono text-rose-300">
+              <div id="examTimerDigits" class="display text-2xl font-bold mono text-rose-300" aria-live="polite" aria-atomic="true">
                 ${mins.toString().padStart(2, '0')}:${secs.toString().padStart(2, '0')}
               </div>
             </div>
@@ -153,11 +153,11 @@ export class TimedExam {
 
           <div class="flex-1 max-w-md">
             <div class="w-full h-2.5 bg-black/60 rounded-full overflow-hidden border border-white/10">
-              <div id="examTimerProgressBar" class="h-full bg-gradient-to-r from-emerald-500 to-rose-500 transition-all duration-1000" style="width: 100%;"></div>
+              <div id="examTimerProgressBar" class="h-full bg-gradient-to-r from-emerald-500 to-rose-500 transition-all duration-1000" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="100" aria-label="Progreso del examen" style="width: 100%;"></div>
             </div>
           </div>
 
-          <button id="btnSubmitTimedExam" class="btn px-5 py-2.5 rounded-xl bg-gradient-to-r from-emerald-600 to-teal-600 text-white font-bold text-xs shadow-lg">
+          <button id="btnSubmitTimedExam" class="btn px-5 py-2.5 rounded-xl bg-gradient-to-r from-emerald-600 to-teal-600 text-white font-bold text-xs shadow-lg" type="button" aria-label="Entregar examen clínico">
             📜 Entregar Examen
           </button>
         </div>

@@ -45,6 +45,42 @@ body {
   overflow-x: hidden;
 }
 
+button, input, select, textarea, a {
+  font: inherit;
+}
+
+button,
+[role="button"],
+a[role="button"] {
+  min-height: 44px;
+}
+
+.btn,
+.nav-link,
+.btn-case-pick,
+.zone-btn,
+.animal-card,
+.calc-tab,
+.btn-filter-note {
+  min-height: 44px;
+  padding-block: 0.7rem;
+}
+
+:focus-visible {
+  outline: 3px solid rgba(52, 211, 153, 0.9);
+  outline-offset: 2px;
+  box-shadow: 0 0 0 5px rgba(16, 185, 129, 0.18);
+}
+
+#toast {
+  max-width: min(24rem, calc(100vw - 1.5rem));
+  z-index: 70;
+}
+
+#toast[aria-live="polite"] {
+  overscroll-behavior: contain;
+}
+
 /* Scrollbar Personalizada Científica */
 ::-webkit-scrollbar {
   width: 7px;
@@ -250,5 +286,56 @@ canvas {
   }
   .hud-card {
     padding: 1rem !important;
+  }
+}
+
+@media (max-width: 640px) {
+  body {
+    font-size: 15px;
+  }
+
+  .btn,
+  .nav-link,
+  .btn-case-pick,
+  .zone-btn,
+  .animal-card,
+  .calc-tab,
+  .btn-filter-note {
+    min-height: 46px;
+    padding-block: 0.72rem;
+  }
+
+  .chip {
+    padding: 0.55rem 0.7rem;
+  }
+
+  #toast {
+    left: 0.75rem;
+    right: 0.75rem;
+    top: 0.75rem;
+    width: auto;
+    max-width: none;
+  }
+
+  .glass,
+  .glass-subtle,
+  .hud-card {
+    border-radius: 1rem;
+  }
+}
+
+@media (max-width: 420px) {
+  .hud-card {
+    padding: 0.85rem !important;
+  }
+
+  .btn,
+  .nav-link,
+  .btn-case-pick,
+  .zone-btn,
+  .animal-card,
+  .calc-tab,
+  .btn-filter-note {
+    width: 100%;
   }
 }

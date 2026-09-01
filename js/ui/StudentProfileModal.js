@@ -10,6 +10,12 @@ export class StudentProfileModal {
   constructor(modalId, { storeInstance = store } = {}) {
     this.modal = document.getElementById(modalId);
     this.store = storeInstance;
+    this.lastFocusedElement = null;
+    this.handleEscapeKey = (event) => {
+      if (event.key === "Escape" && this.modal && !this.modal.classList.contains("hidden")) {
+        this.close();
+      }
+    };
     this.init();
   }
 
@@ -23,10 +29,14 @@ export class StudentProfileModal {
     const academic = this.store.get("academic");
     const scores = academic.scores || {};
 
+    this.lastFocusedElement = document.activeElement;
     this.modal.classList.remove("hidden");
+    this.modal.setAttribute("role", "dialog");
+    this.modal.setAttribute("aria-modal", "true");
+    this.modal.setAttribute("aria-label", "Expediente académico del estudiante");
     this.modal.innerHTML = `
       <div class="fixed inset-0 bg-black/75 backdrop-blur-md flex items-center justify-center p-4 z-50">
-        <div class="glass hud-card w-full max-w-2xl max-h-[90vh] overflow-y-auto rounded-2xl border border-[var(--border)] p-6 space-y-5">
+        <div class="glass hud-card w-full max-w-2xl max-h-[90vh] overflow-y-auto rounded-2xl border border-[var(--border)] p-6 space-y-5 modal-panel" tabindex="-1">
           <!-- Encabezado del Perfil -->
           <div class="flex justify-between items-start border-b border-[var(--border)] pb-4">
             <div class="flex items-center gap-3">
@@ -38,7 +48,7 @@ export class StudentProfileModal {
                 <p class="text-xs text-[var(--muted)] mono">${academic.university} · ${academic.level}</p>
               </div>
             </div>
-            <button id="btnCloseProfileModal" class="btn p-2 rounded-xl text-gray-400 hover:text-white bg-white/5 hover:bg-white/10">
+            <button id="btnCloseProfileModal" class="btn p-2 rounded-xl text-gray-400 hover:text-white bg-white/5 hover:bg-white/10" type="button" aria-label="Cerrar expediente académico">
               ✕
             </button>
           </div>
@@ -123,13 +133,19 @@ export class StudentProfileModal {
 
           <!-- Cierre -->
           <div class="flex justify-end pt-2">
-            <button id="btnExitProfile" class="btn px-4 py-2 rounded-xl text-xs font-semibold bg-white/10 hover:bg-white/15 text-white">
+            <button id="btnExitProfile" class="btn px-4 py-2 rounded-xl text-xs font-semibold bg-white/10 hover:bg-white/15 text-white" type="button" aria-label="Cerrar expediente académico">
               Cerrar Expediente
             </button>
           </div>
         </div>
       </div>
     `;
+
+    document.removeEventListener("keydown", this.handleEscapeKey);
+    document.addEventListener("keydown", this.handleEscapeKey);
+
+    const firstFocusable = this.modal.querySelector("button, [href], input, select, textarea, [tabindex]:not([tabindex='-1'])");
+    if (firstFocusable) firstFocusable.focus();
 
     document.getElementById("btnCloseProfileModal").onclick = () => this.close();
     document.getElementById("btnExitProfile").onclick = () => this.close();
@@ -143,8 +159,15 @@ export class StudentProfileModal {
 
   close() {
     if (this.modal) {
+      document.removeEventListener("keydown", this.handleEscapeKey);
       this.modal.classList.add("hidden");
       this.modal.innerHTML = "";
+      this.modal.removeAttribute("role");
+      this.modal.removeAttribute("aria-modal");
+      this.modal.removeAttribute("aria-label");
+      if (this.lastFocusedElement && typeof this.lastFocusedElement.focus === "function") {
+        this.lastFocusedElement.focus();
+      }
     }
   }
 }

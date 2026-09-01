@@ -150,11 +150,11 @@ export class FieldNotebook {
           </div>
 
           <div class="flex gap-2">
-            <button id="btnOpenNewNoteModal" class="btn px-4 py-2 rounded-xl bg-purple-600 hover:bg-purple-500 text-white font-bold text-xs shadow flex items-center gap-1.5">
-              <span>✍️</span> Nueva Entrada SOAP
+            <button id="btnOpenNewNoteModal" class="btn px-4 py-2 rounded-xl bg-purple-600 hover:bg-purple-500 text-white font-bold text-xs shadow flex items-center gap-1.5" type="button" aria-label="Crear nueva nota del cuaderno SOAP">
+              <span aria-hidden="true">✍️</span> Nueva Entrada SOAP
             </button>
-            <button id="btnExportNotesTxt" class="btn px-4 py-2 rounded-xl bg-black/40 border border-white/10 hover:bg-white/10 text-gray-200 text-xs font-semibold flex items-center gap-1.5">
-              <span>📄</span> Exportar Bitácora
+            <button id="btnExportNotesTxt" class="btn px-4 py-2 rounded-xl bg-black/40 border border-white/10 hover:bg-white/10 text-gray-200 text-xs font-semibold flex items-center gap-1.5" type="button" aria-label="Exportar el cuaderno a archivo de texto">
+              <span aria-hidden="true">📄</span> Exportar Bitácora
             </button>
           </div>
         </div>
@@ -163,10 +163,10 @@ export class FieldNotebook {
         <div class="glass p-4 rounded-2xl border border-[var(--border)] flex flex-wrap items-center justify-between gap-3">
           <div class="flex items-center gap-2 text-xs">
             <span class="text-gray-400 font-bold">Filtrar entradas:</span>
-            <button class="btn-filter-note btn px-2.5 py-1 rounded-lg border text-[11px] ${this.activeFilter === 'all' ? 'bg-white/10 text-white border-white/20' : 'text-gray-400 border-white/5'}" data-f="all">Todas (${this.entries.length})</button>
-            <button class="btn-filter-note btn px-2.5 py-1 rounded-lg border text-[11px] ${this.activeFilter === 'clinica' ? 'bg-purple-950 text-purple-300 border-purple-500/40' : 'text-gray-400 border-white/5'}" data-f="clinica">🩺 Clínica</button>
-            <button class="btn-filter-note btn px-2.5 py-1 rounded-lg border text-[11px] ${this.activeFilter === 'odontologia' ? 'bg-blue-950 text-blue-300 border-blue-500/40' : 'text-gray-400 border-white/5'}" data-f="odontologia">🦷 Odontología</button>
-            <button class="btn-filter-note btn px-2.5 py-1 rounded-lg border text-[11px] ${this.activeFilter === 'pastos' ? 'bg-emerald-950 text-emerald-300 border-emerald-500/40' : 'text-gray-400 border-white/5'}" data-f="pastos">🌿 Campo & Pasturas</button>
+            <button class="btn-filter-note btn px-2.5 py-1 rounded-lg border text-[11px] ${this.activeFilter === 'all' ? 'bg-white/10 text-white border-white/20' : 'text-gray-400 border-white/5'}" data-f="all" type="button" aria-label="Mostrar todas las entradas del cuaderno">Todas (${this.entries.length})</button>
+            <button class="btn-filter-note btn px-2.5 py-1 rounded-lg border text-[11px] ${this.activeFilter === 'clinica' ? 'bg-purple-950 text-purple-300 border-purple-500/40' : 'text-gray-400 border-white/5'}" data-f="clinica" type="button" aria-label="Filtrar entradas clínicas">🩺 Clínica</button>
+            <button class="btn-filter-note btn px-2.5 py-1 rounded-lg border text-[11px] ${this.activeFilter === 'odontologia' ? 'bg-blue-950 text-blue-300 border-blue-500/40' : 'text-gray-400 border-white/5'}" data-f="odontologia" type="button" aria-label="Filtrar entradas de odontología">🦷 Odontología</button>
+            <button class="btn-filter-note btn px-2.5 py-1 rounded-lg border text-[11px] ${this.activeFilter === 'pastos' ? 'bg-emerald-950 text-emerald-300 border-emerald-500/40' : 'text-gray-400 border-white/5'}" data-f="pastos" type="button" aria-label="Filtrar entradas de pasturas y campo">🌿 Campo & Pasturas</button>
           </div>
           <span class="mono text-xs text-purple-300 font-bold">${this.entries.length} Registros Guardados</span>
         </div>
@@ -175,7 +175,7 @@ export class FieldNotebook {
         <div id="newNoteFormContainer" class="hidden glass p-6 rounded-3xl border border-purple-500/40 bg-black/70 space-y-4 shadow-2xl">
           <div class="flex justify-between items-center border-b border-white/10 pb-2">
             <h3 class="display font-bold text-white text-base m-0">Registrar Nueva Nota Clínica (Estructura SOAP)</h3>
-            <button id="btnCloseNoteForm" class="btn p-1 text-gray-400 hover:text-white">✕</button>
+            <button id="btnCloseNoteForm" class="btn p-1 text-gray-400 hover:text-white" type="button" aria-label="Cerrar formulario de nueva nota">✕</button>
           </div>
 
           <div class="grid sm:grid-cols-3 gap-3 text-xs">
@@ -223,8 +223,8 @@ export class FieldNotebook {
           </div>
 
           <div class="flex justify-end gap-2 pt-2">
-            <button id="btnCancelNoteForm" class="btn px-4 py-2 rounded-xl bg-black/40 border border-white/10 text-gray-300 text-xs">Cancelar</button>
-            <button id="btnSaveNoteSubmit" class="btn px-6 py-2.5 rounded-xl bg-purple-600 hover:bg-purple-500 text-white font-bold text-xs shadow-lg">Guardar Entrada en Bitácora</button>
+            <button id="btnCancelNoteForm" class="btn px-4 py-2 rounded-xl bg-black/40 border border-white/10 text-gray-300 text-xs" type="button" aria-label="Cancelar la nueva nota">Cancelar</button>
+            <button id="btnSaveNoteSubmit" class="btn px-6 py-2.5 rounded-xl bg-purple-600 hover:bg-purple-500 text-white font-bold text-xs shadow-lg" type="button" aria-label="Guardar la entrada en el cuaderno SOAP">Guardar Entrada en Bitácora</button>
           </div>
         </div>
 
@@ -241,7 +241,7 @@ export class FieldNotebook {
                   </div>
                   <span class="mono text-[10px] text-gray-400 block mt-0.5">📅 ${escapeHtml(entry.date)}</span>
                 </div>
-                <button class="btn-delete-note btn text-gray-500 hover:text-rose-400 text-xs p-1" data-id="${escapeHtml(entry.id)}" title="Eliminar entrada">🗑️</button>
+                <button class="btn-delete-note btn text-gray-500 hover:text-rose-400 text-xs p-1" data-id="${escapeHtml(entry.id)}" title="Eliminar entrada" type="button" aria-label="Eliminar entrada del cuaderno">🗑️</button>
               </div>
 
               <div class="grid sm:grid-cols-2 gap-3 text-xs">
@@ -302,7 +302,7 @@ export class FieldNotebook {
         const p = normalizeText(this.container.querySelector("#inputSoapP").value, "Conducta de soporte.");
 
         const now = new Date();
-        const dateStr = `${now.getFullYear()}-${(now.getMonth()+1).toString().padStart(2,'0')}-${now.getDate().toString().padStart(2,'0')} ${now.getHours().toString().padStart(2,'0')}:${now.getMinutes().toString().padStart(2,'0')}`;
+        const dateStr = `${now.getFullYear()}-${(now.getMonth() + 1).toString().padStart(2, '0')}-${now.getDate().toString().padStart(2, '0')} ${now.getHours().toString().padStart(2, '0')}:${now.getMinutes().toString().padStart(2, '0')}`;
 
         const newEntry = {
           id: `note_${Date.now()}`,
