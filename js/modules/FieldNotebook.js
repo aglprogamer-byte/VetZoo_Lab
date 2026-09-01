@@ -10,6 +10,45 @@ import { achievements } from "../core/Achievements.js";
 
 const NOTEBOOK_STORAGE_KEY = "vetzoo_field_notebook_entries";
 
+function escapeHtml(value = "") {
+  return String(value)
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;")
+    .replace(/\"/g, "&quot;")
+    .replace(/'/g, "&#039;");
+}
+
+function normalizeText(value, fallback = "") {
+  if (typeof value !== "string") return fallback;
+  const trimmed = value.replace(/\s+/g, " ").trim();
+  return trimmed ? trimmed.slice(0, 2500) : fallback;
+}
+
+function normalizeEntry(entry) {
+  if (!entry || typeof entry !== "object") return null;
+
+  const soap = entry.soap && typeof entry.soap === "object" ? entry.soap : {};
+  const animalName = normalizeText(entry.animalName, "Paciente sin nombre");
+  const species = normalizeText(entry.species, "Sin especie");
+  const type = ["clinica", "odontologia", "pastos"].includes(entry.type) ? entry.type : "clinica";
+
+  return {
+    id: typeof entry.id === "string" ? entry.id : `note_${Date.now()}`,
+    date: typeof entry.date === "string" ? entry.date : new Date().toISOString(),
+    animalId: typeof entry.animalId === "string" ? entry.animalId : "custom",
+    animalName,
+    species,
+    type,
+    soap: {
+      s: normalizeText(soap.s, "Sin observaciones subjetivas."),
+      o: normalizeText(soap.o, "Sin constantes registradas."),
+      a: normalizeText(soap.a, "Diagnóstico presuntivo pendiente."),
+      p: normalizeText(soap.p, "Conducta de soporte.")
+    }
+  };
+}
+
 const INITIAL_ENTRIES = [
   {
     id: "note_1",
@@ -52,15 +91,27 @@ export class FieldNotebook {
   loadEntries() {
     try {
       const raw = localStorage.getItem(NOTEBOOK_STORAGE_KEY);
-      if (raw) return JSON.parse(raw);
-    } catch (e) { /* ignore */ }
-    return [...INITIAL_ENTRIES];
+      if (!raw) return INITIAL_ENTRIES.map(entry => normalizeEntry(entry)).filter(Boolean);
+
+      const parsed = JSON.parse(raw);
+      if (!Array.isArray(parsed)) return INITIAL_ENTRIES.map(entry => normalizeEntry(entry)).filter(Boolean);
+
+      const validEntries = parsed.map(normalizeEntry).filter(Boolean);
+      return validEntries.length ? validEntries : INITIAL_ENTRIES.map(entry => normalizeEntry(entry)).filter(Boolean);
+    } catch (e) {
+      console.warn("FieldNotebook: los datos guardados están corruptos o no son válidos; se restauran los valores iniciales.", e);
+      return INITIAL_ENTRIES.map(entry => normalizeEntry(entry)).filter(Boolean);
+    }
   }
 
   saveEntries() {
     try {
-      localStorage.setItem(NOTEBOOK_STORAGE_KEY, JSON.stringify(this.entries));
-    } catch (e) { /* ignore */ }
+      const safeEntries = this.entries.map(normalizeEntry).filter(Boolean);
+      localStorage.setItem(NOTEBOOK_STORAGE_KEY, JSON.stringify(safeEntries));
+      this.entries = safeEntries;
+    } catch (e) {
+      console.warn("FieldNotebook: no se pudo guardar la bitácora. El contenido sigue activo en memoria.", e);
+    }
   }
 
   init() {
@@ -71,6 +122,18 @@ export class FieldNotebook {
     if (!this.container) return;
 
     const filtered = this.activeFilter === "all" ? this.entries : this.entries.filter(e => e.type === this.activeFilter);
+    const safeEntries = filtered.map(entry => ({
+      ...entry,
+      animalName: escapeHtml(entry.animalName),
+      species: escapeHtml(entry.species),
+      type: escapeHtml(entry.type),
+      soap: {
+        s: escapeHtml(entry.soap.s),
+        o: escapeHtml(entry.soap.o),
+        a: escapeHtml(entry.soap.a),
+        p: escapeHtml(entry.soap.p)
+      }
+    }));
 
     this.container.innerHTML = `
       <div class="space-y-6">
@@ -167,7 +230,7 @@ export class FieldNotebook {
 
         <!-- Lista Cronológica de Entradas -->
         <div class="space-y-4">
-          ${filtered.map(entry => `
+          ${safeEntries.map(entry => `
             <div class="glass p-5 rounded-2xl border border-[var(--border)] bg-black/40 space-y-3 hover:border-purple-500/40 transition">
               <div class="flex flex-wrap justify-between items-start gap-2 border-b border-white/10 pb-2.5">
                 <div>
@@ -176,9 +239,9 @@ export class FieldNotebook {
                     <span class="badge-tag bg-purple-500/20 text-purple-300 border border-purple-500/30 text-[10px]">${entry.species}</span>
                     <span class="chip text-[9px] uppercase mono py-0.5 px-2">${entry.type}</span>
                   </div>
-                  <span class="mono text-[10px] text-gray-400 block mt-0.5">📅 ${entry.date}</span>
+                  <span class="mono text-[10px] text-gray-400 block mt-0.5">📅 ${escapeHtml(entry.date)}</span>
                 </div>
-                <button class="btn-delete-note btn text-gray-500 hover:text-rose-400 text-xs p-1" data-id="${entry.id}" title="Eliminar entrada">🗑️</button>
+                <button class="btn-delete-note btn text-gray-500 hover:text-rose-400 text-xs p-1" data-id="${escapeHtml(entry.id)}" title="Eliminar entrada">🗑️</button>
               </div>
 
               <div class="grid sm:grid-cols-2 gap-3 text-xs">
@@ -228,13 +291,15 @@ export class FieldNotebook {
     const btnSave = this.container.querySelector("#btnSaveNoteSubmit");
     if (btnSave) {
       btnSave.onclick = () => {
-        const aName = this.container.querySelector("#inputNoteAnimal").value || "Paciente S/N";
-        const sp = this.container.querySelector("#selectNoteSpecies").value;
-        const tp = this.container.querySelector("#selectNoteType").value;
-        const s = this.container.querySelector("#inputSoapS").value || "Sin observaciones subjetivas.";
-        const o = this.container.querySelector("#inputSoapO").value || "Sin constantes registradas.";
-        const a = this.container.querySelector("#inputSoapA").value || "Diagnóstico presuntivo pendiente.";
-        const p = this.container.querySelector("#inputSoapP").value || "Conducta de soporte.";
+        const aName = normalizeText(this.container.querySelector("#inputNoteAnimal").value, "Paciente S/N");
+        const sp = normalizeText(this.container.querySelector("#selectNoteSpecies").value, "Sin especie");
+        const tp = ["clinica", "odontologia", "pastos"].includes(this.container.querySelector("#selectNoteType").value)
+          ? this.container.querySelector("#selectNoteType").value
+          : "clinica";
+        const s = normalizeText(this.container.querySelector("#inputSoapS").value, "Sin observaciones subjetivas.");
+        const o = normalizeText(this.container.querySelector("#inputSoapO").value, "Sin constantes registradas.");
+        const a = normalizeText(this.container.querySelector("#inputSoapA").value, "Diagnóstico presuntivo pendiente.");
+        const p = normalizeText(this.container.querySelector("#inputSoapP").value, "Conducta de soporte.");
 
         const now = new Date();
         const dateStr = `${now.getFullYear()}-${(now.getMonth()+1).toString().padStart(2,'0')}-${now.getDate().toString().padStart(2,'0')} ${now.getHours().toString().padStart(2,'0')}:${now.getMinutes().toString().padStart(2,'0')}`;

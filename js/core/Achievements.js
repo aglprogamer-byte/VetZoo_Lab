@@ -93,38 +93,84 @@ export const XP_ACTIONS = {
 
 const STORAGE_KEY = "vetzoo_achievements";
 
+function isPlainObject(value) {
+  return value !== null && typeof value === "object" && !Array.isArray(value);
+}
+
+function sanitizeAchievementState(value) {
+  const fallback = {
+    totalXP: 0,
+    unlockedAchievements: [],
+    counters: {},
+    streak: {
+      current: 0,
+      best: 0,
+      lastLoginDate: null,
+      history: []
+    },
+    history: []
+  };
+
+  if (!isPlainObject(value)) return fallback;
+
+  const normalizedCounters = {};
+  const incomingCounters = isPlainObject(value.counters) ? value.counters : {};
+  Object.entries(incomingCounters).forEach(([key, num]) => {
+    if (typeof num === "number" && Number.isFinite(num)) {
+      normalizedCounters[key] = num;
+    }
+  });
+
+  const incomingStreak = isPlainObject(value.streak) ? value.streak : {};
+  const normalizedStreak = {
+    current: typeof incomingStreak.current === "number" && Number.isFinite(incomingStreak.current) ? incomingStreak.current : 0,
+    best: typeof incomingStreak.best === "number" && Number.isFinite(incomingStreak.best) ? incomingStreak.best : 0,
+    lastLoginDate: typeof incomingStreak.lastLoginDate === "string" ? incomingStreak.lastLoginDate : null,
+    history: Array.isArray(incomingStreak.history) ? incomingStreak.history.filter(item => typeof item === "string").slice(0, 30) : []
+  };
+
+  return {
+    totalXP: typeof value.totalXP === "number" && Number.isFinite(value.totalXP) ? value.totalXP : 0,
+    unlockedAchievements: Array.isArray(value.unlockedAchievements)
+      ? value.unlockedAchievements.filter(item => typeof item === "string").slice(0, 200)
+      : [],
+    counters: normalizedCounters,
+    streak: normalizedStreak,
+    history: Array.isArray(value.history)
+      ? value.history.filter(item => isPlainObject(item)).slice(0, 200)
+      : []
+  };
+}
+
 export class AchievementEngine {
   constructor() {
+    this._listeners = [];
     this.data = this._load();
     this._checkDailyStreak();
-    this._listeners = [];
   }
 
   // ─── Persistencia ─────────────────────────────────────────────────
   _load() {
     try {
-      const raw = localStorage.getItem(STORAGE_KEY);
-      if (raw) return JSON.parse(raw);
-    } catch (e) { /* ignore */ }
-
-    return {
-      totalXP: 0,
-      unlockedAchievements: [],   // array of achievement ids
-      counters: {},               // e.g. { cases_solved: 3, hemograms_done: 5 }
-      streak: {
-        current: 0,
-        best: 0,
-        lastLoginDate: null,      // "YYYY-MM-DD"
-        history: []               // last 30 dates
-      },
-      history: []                 // { action, xp, date, detail }
-    };
+      const storage = typeof localStorage !== "undefined" ? localStorage : null;
+      const raw = storage ? storage.getItem(STORAGE_KEY) : null;
+      if (!raw) return sanitizeAchievementState(null);
+      return sanitizeAchievementState(JSON.parse(raw));
+    } catch (e) {
+      console.warn("AchievementEngine: no se pudo restaurar el progreso de logros. Se reinicia a un estado seguro.", e);
+      return sanitizeAchievementState(null);
+    }
   }
 
   _save() {
     try {
-      localStorage.setItem(STORAGE_KEY, JSON.stringify(this.data));
-    } catch (e) { /* ignore */ }
+      const storage = typeof localStorage !== "undefined" ? localStorage : null;
+      if (storage) {
+        storage.setItem(STORAGE_KEY, JSON.stringify(this.data));
+      }
+    } catch (e) {
+      console.warn("AchievementEngine: no se pudo persistir el progreso de logros. El estado sigue activo en memoria.", e);
+    }
   }
 
   // ─── Suscripción a Eventos ─────────────────────────────────────────
@@ -134,8 +180,11 @@ export class AchievementEngine {
   }
 
   _emit(eventType, payload) {
+    if (!Array.isArray(this._listeners)) this._listeners = [];
     this._listeners.forEach(fn => {
-      try { fn(eventType, payload); } catch (e) { /* ignore */ }
+      try { fn(eventType, payload); } catch (e) {
+        console.warn("AchievementEngine: evento de logros rechazado por un listener inválido.", e);
+      }
     });
   }
 

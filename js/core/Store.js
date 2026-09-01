@@ -21,6 +21,50 @@ export const ACTION_TYPES = {
 
 const STORAGE_KEY = "zootecnia3d_student_data";
 
+function isObject(value) {
+  return value !== null && typeof value === "object" && !Array.isArray(value);
+}
+
+function sanitizeAcademicProgress(value) {
+  const fallback = {
+    studentName: "Estudiante Universitario",
+    university: "Facultad de Zootecnia & Medicina Veterinaria",
+    level: "Nivel I: Prácticas Integradas",
+    scores: {
+      nutricion: 75,
+      semiologia: 70,
+      clinica: 80,
+      pastos: 60,
+      economia: 65
+    },
+    completedPractices: [],
+    caseReports: []
+  };
+
+  if (!isObject(value)) return fallback;
+
+  const scores = isObject(value.scores) ? value.scores : {};
+  const normalizedScores = { ...fallback.scores };
+  Object.entries(scores).forEach(([key, num]) => {
+    if (typeof num === "number" && Number.isFinite(num)) {
+      normalizedScores[key] = Math.min(100, Math.max(0, num));
+    }
+  });
+
+  return {
+    studentName: typeof value.studentName === "string" ? value.studentName.slice(0, 120) : fallback.studentName,
+    university: typeof value.university === "string" ? value.university.slice(0, 200) : fallback.university,
+    level: typeof value.level === "string" ? value.level.slice(0, 120) : fallback.level,
+    scores: normalizedScores,
+    completedPractices: Array.isArray(value.completedPractices)
+      ? value.completedPractices.filter(item => typeof item === "string").slice(0, 200)
+      : [],
+    caseReports: Array.isArray(value.caseReports)
+      ? value.caseReports.filter(item => isObject(item)).slice(0, 200)
+      : []
+  };
+}
+
 export class Store {
   constructor(initialState = {}) {
     this.listeners = new Map();
@@ -198,24 +242,16 @@ export class Store {
     try {
       if (typeof window !== "undefined" && "localStorage" in window) {
         const saved = window.localStorage.getItem(STORAGE_KEY);
-        if (saved) return JSON.parse(saved);
-      }
-    } catch (e) {}
+        if (!saved) return sanitizeAcademicProgress(null);
 
-    return {
-      studentName: "Estudiante Universitario",
-      university: "Facultad de Zootecnia & Medicina Veterinaria",
-      level: "Nivel I: Prácticas Integradas",
-      scores: {
-        nutricion: 75,
-        semiologia: 70,
-        clinica: 80,
-        pastos: 60,
-        economia: 65
-      },
-      completedPractices: [],
-      caseReports: []
-    };
+        const parsed = JSON.parse(saved);
+        return sanitizeAcademicProgress(parsed);
+      }
+    } catch (e) {
+      console.warn("Store: no se pudo recuperar el progreso académico. Se reutiliza el valor por defecto.", e);
+    }
+
+    return sanitizeAcademicProgress(null);
   }
 
   saveStudentProgress() {
@@ -223,7 +259,9 @@ export class Store {
       if (typeof window !== "undefined" && "localStorage" in window) {
         window.localStorage.setItem(STORAGE_KEY, JSON.stringify(this.state.academic));
       }
-    } catch (e) {}
+    } catch (e) {
+      console.warn("Store: no se pudo guardar el progreso académico. El estado sigue vivo en memoria.", e);
+    }
     this.emit("academic:updated", this.state.academic);
   }
 
