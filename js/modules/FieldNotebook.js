@@ -324,6 +324,12 @@ export class FieldNotebook {
     this.container.querySelectorAll(".btn-delete-note").forEach(btn => {
       btn.onclick = () => {
         const id = btn.dataset.id;
+        const confirmed = typeof window !== "undefined" && typeof window.confirm === "function"
+          ? window.confirm("¿Seguro que quieres eliminar esta entrada del cuaderno? Esta acción no se puede deshacer.")
+          : true;
+
+        if (!confirmed) return;
+
         this.entries = this.entries.filter(e => e.id !== id);
         this.saveEntries();
         this.render();

@@ -213,6 +213,13 @@ export class CaseEngine {
     };
   }
 
+  getRandomCase(excludeCaseId = this.activeCase?.id) {
+    const availableCases = this.cases.filter(c => c.id !== excludeCaseId);
+    if (!availableCases.length) return this.activeCase;
+    const randomIndex = Math.floor(Math.random() * availableCases.length);
+    return availableCases[randomIndex];
+  }
+
   selectCase(caseId) {
     const found = this.cases.find(c => c.id === caseId);
     if (found) {
@@ -221,6 +228,22 @@ export class CaseEngine {
       AudioFx.click();
       return this.activeCase;
     }
+    return this.activeCase;
+  }
+
+  selectRandomCase() {
+    const nextCase = this.getRandomCase();
+    if (!nextCase || nextCase.id === this.activeCase?.id) {
+      return this.activeCase;
+    }
+
+    this.activeCase = nextCase;
+    this.studentAnswers = { selectedHypothesis: null, selectedTreatmentOpt: null, notes: "" };
+    AudioFx.click();
+    this.store.emit("toast:show", {
+      msg: `🎲 <b>Caso aleatorio:</b> ${nextCase.code} — ${nextCase.title}`,
+      type: "info"
+    });
     return this.activeCase;
   }
 

@@ -41,6 +41,12 @@ export class TimedExam {
     }
   }
 
+  selectRandomCase(excludeCaseId = this.activeCase?.id) {
+    const availableCases = UNIVERSITY_CLINICAL_CASES.filter(caseItem => caseItem.id !== excludeCaseId);
+    if (!availableCases.length) return this.activeCase;
+    return availableCases[Math.floor(Math.random() * availableCases.length)];
+  }
+
   renderStartScreen() {
     this.container.innerHTML = `
       <div class="glass p-8 rounded-3xl border border-rose-500/30 bg-black/60 max-w-2xl mx-auto text-center space-y-6 shadow-2xl">
@@ -81,8 +87,8 @@ export class TimedExam {
     const btn = this.container.querySelector("#btnStartTimedExam");
     if (btn) {
       btn.onclick = () => {
-        const randomIndex = Math.floor(Math.random() * UNIVERSITY_CLINICAL_CASES.length);
-        this.activeCase = UNIVERSITY_CLINICAL_CASES[randomIndex];
+        const nextCase = this.selectRandomCase();
+        this.activeCase = nextCase;
         this.timeRemaining = this.durationSeconds;
         this.examState = "running";
         this.studentAnswers = { selectedHypothesis: null, selectedTreatmentOpt: null };
@@ -310,7 +316,14 @@ export class TimedExam {
     const btn = this.container.querySelector("#btnTryAnotherExam");
     if (btn) {
       btn.onclick = () => {
+        const shouldReset = typeof window !== "undefined" && typeof window.confirm === "function"
+          ? window.confirm("¿Quieres iniciar otro examen? Se perderá el resultado actual y se cargará un caso nuevo.")
+          : true;
+
+        if (!shouldReset) return;
+
         this.examState = "idle";
+        this.finalScore = 0;
         this.render();
       };
     }

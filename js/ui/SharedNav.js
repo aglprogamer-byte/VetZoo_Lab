@@ -116,25 +116,25 @@ export class SharedNav {
       <!-- Barra de Navegación de Escritorio con scroll suave -->
       <nav class="hidden lg:flex gap-1.5 mt-3 overflow-x-auto pb-1" id="desktopNavLinks" aria-label="Navegación principal">
         ${pages.map(p => {
-          const isActive = p.id === this.activePage;
-          return `
+      const isActive = p.id === this.activePage;
+      return `
             <a href="${p.href}" class="nav-link btn px-3 py-2 rounded-xl text-xs font-semibold border whitespace-nowrap ${isActive ? 'bg-emerald-950/70 text-emerald-300 border-emerald-500/50 shadow-md ring-1 ring-emerald-500/30' : 'bg-black/30 text-gray-400 border-[var(--border)] hover:bg-white/5 hover:text-white'} flex items-center gap-1.5 no-underline" aria-current="${isActive ? 'page' : 'false'}" aria-label="Ir a ${p.label}">
               <span aria-hidden="true">${p.icon}</span> ${p.label}
             </a>
           `;
-        }).join("")}
+    }).join("")}
       </nav>
 
       <!-- Menú Desplegable Móvil -->
       <div id="mobileMenuDrawer" class="hidden lg:hidden glass hud-card rounded-2xl p-3 mt-2 border border-[var(--border)] grid grid-cols-2 gap-1.5 shadow-2xl" aria-label="Menú móvil">
         ${pages.map(p => {
-          const isActive = p.id === this.activePage;
-          return `
+      const isActive = p.id === this.activePage;
+      return `
             <a href="${p.href}" class="btn p-2 rounded-xl text-xs font-semibold border ${isActive ? 'bg-emerald-950/70 text-emerald-300 border-emerald-500/50' : 'bg-black/20 text-gray-300 border-white/5 hover:bg-white/5'} flex items-center gap-1.5 no-underline" aria-current="${isActive ? 'page' : 'false'}" aria-label="Ir a ${p.label}">
               <span aria-hidden="true">${p.icon}</span> ${p.label}
             </a>
           `;
-        }).join("")}
+    }).join("")}
       </div>
     `;
   }
