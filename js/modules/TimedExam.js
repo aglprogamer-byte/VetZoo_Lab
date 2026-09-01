@@ -93,7 +93,11 @@ export class TimedExam {
   }
 
   startTimer() {
-    if (this.timerInterval) clearInterval(this.timerInterval);
+    if (this.timerInterval) {
+      clearInterval(this.timerInterval);
+      this.timerInterval = null;
+    }
+
     this.timerInterval = setInterval(() => {
       this.timeRemaining--;
       this.updateTimerDisplay();
@@ -105,6 +109,7 @@ export class TimedExam {
 
       if (this.timeRemaining <= 0) {
         clearInterval(this.timerInterval);
+        this.timerInterval = null;
         this.submitExam();
       }
     }, 1000);
@@ -241,19 +246,25 @@ export class TimedExam {
   }
 
   submitExam() {
-    if (this.timerInterval) clearInterval(this.timerInterval);
+    if (this.timerInterval) {
+      clearInterval(this.timerInterval);
+      this.timerInterval = null;
+    }
+
     this.examState = "submitted";
 
     const c = this.activeCase;
     let score = 0;
 
-    const correctHypo = c.hypotheses.find(h => h.correct);
-    if (this.studentAnswers.selectedHypothesis === correctHypo.id) {
+    const correctHypo = c?.hypotheses?.find(h => h.isCorrect);
+    const selectedHypothesis = this.studentAnswers?.selectedHypothesis;
+    if (selectedHypothesis && correctHypo && selectedHypothesis === correctHypo.id) {
       score += 50;
     }
 
-    const correctTreat = c.treatmentQuestions[0].correctId;
-    if (this.studentAnswers.selectedTreatmentOpt === correctTreat) {
+    const correctTreat = c?.treatmentQuestions?.[0]?.options?.find(opt => opt.isCorrect);
+    const selectedTreatment = this.studentAnswers?.selectedTreatmentOpt;
+    if (selectedTreatment && correctTreat && selectedTreatment === correctTreat.id) {
       score += 50;
     }
 
