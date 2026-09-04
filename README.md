@@ -1,66 +1,81 @@
-# 🧬 VET & ZOO LAB — Campus Digital Universitario de Medicina Veterinaria & Zootecnia
+# 🐄 VET & ZOO LAB
 
-> **Plataforma Educativa Universitaria, Entorno Virtual 3D y Laboratorios Clínicos Independientes para Ciencias Agropecuarias.**
-
----
-
-## 🌟 Módulos y Páginas Independientes (13 Entornos)
-
-1. **🏠 Portal Universitario Maestro (`index.html`):**
-   - Centro de bienvenida interactivo con catálogo de competencias, 12 tarjetas de módulos y telemetría en vivo.
-
-2. **🌱 Pastos, Forrajes & Fertilización (`pastos.html`):**
-   - Simulador de 7 fertilizantes (*Urea*, *NPK 15-15-15*, *DAP*, *Cal Dolomítica*, *Sulfato de Amonio*, *Compost*, *KCl*) con evaluación de respuesta biológica (*Excelente*, *Regular*, *Mala*).
-   - Aforo por cuadrante de $1\text{ m}^2$, cálculo de biomasa ($kg\text{ MS/Ha}$), Punto Óptimo de Reposo y 4 Leyes de André Voisin.
-
-3. **🦠 Atlas Parasitológico & Microscopio Virtual (`parasitos.html`):**
-   - Microscopio con retícula McMaster, aumentos (10x, 40x, 100x), morfometría de 12 especies (*Haemonchus*, *Fasciola*, *Eimeria*, *Moniezia*, *Toxocara*, etc.).
-   - Escala ocular interactiva **FAMACHA©** (Grados 1 al 5) y calculadora cuantitativa de **Huevos Por Gramo (HPG)**.
-
-4. **🔬 Diagnóstico Clínico Multiespecie (`diagnostico.html`):**
-   - Analizador automatizado de hemogramas, bioquímica sérica, uroanálisis y simulador de punción tisular (ID, SC, IM, IV) con farmacopea DCI.
-   - Cálculo automático de periodos de retiro en carne y leche para inocuidad alimentaria.
-
-5. **🎓 Casos Clínicos Universitarios (`casos.html`):**
-   - 5 casos clínicos reales (SARA, Cólico equino, Neumonía bacteriana, Hipocalcemia puerperal, Haemonchosis ovina) con anamnesis profunda, semiología y rúbrica de calificación académica de 100 pts.
-
-6. **⏱️ Modo Examen Cronometrado 10 min (`examen.html`):**
-   - Caso sorpresa al azar bajo presión de tiempo con temporizador visual, alertas y dictamen formal del jurado docente.
-
-7. **🐄 Entrenador de Condición Corporal BCS (`bcs.html`):**
-   - Evaluación semiológica en Bovinos (1-5 Edmonson & Ferguson) y Equinos (1-9 Henneke) con puntos óseos de referencia y balance energético posparto.
-
-8. **🌿 Plantas Tóxicas Regionales (`plantas.html`):**
-   - Catálogo de 18 plantas tóxicas tropicales y andinas (*Brachiaria decumbens*, *Enterolobium*, *Pteridium*, *Palicourea*, *Ricinus*, *Nerium*, *Yuca*, etc.), antídotos y quiz clínico en campo.
-
-9. **📋 Cronograma Sanitario & Bioseguridad (`sanitario.html`):**
-   - Planes de vacunación oficial obligatoria ICA/SENASA (Fiebre Aftosa, Brucelosis, Rabia) y emisión de Certificado de Auditoría en Buenas Prácticas Ganaderas (BPG).
-
-10. **📐 Calculadoras Clínicas & Zootécnicas (`calculadoras.html`):**
-    - 6 herramientas de cálculo: Fluidoterapia por deshidratación ($gotas/min$ y $mL/h$), Dosificación farmacológica, Balance de Cuadrado de Pearson, Aforo/UGM, GDP/FCR y Calostro Brix.
-
-11. **📓 Cuaderno de Campo SOAP (`cuaderno.html`):**
-    - Bitácora clínica hospitalaria bajo metodología SOAP (*Subjetivo, Objetivo, Análisis, Plan*) con historial cronológico y exportación de historias clínicas a texto descargable.
-
-12. **🐾 Granja Escuela Virtual 3D (`granja.html`):**
-    - Entorno 3D interactivo en Three.js con modelos GLB animados (bovino, equino, ovino, porcino), censo de hato e inspección individual.
-
-13. **🌾 Estación de Nutrición & Formulación Bromatológica (`nutricion.html`):**
-    - Formulación TMR en tiempo real con balances de Proteína Cruda (% PC), Energía Metabolizable (Mcal/kg), Fibra FDN y costos diarios.
+Plataforma educativa universitario-ganadera pensada para la formación de profesionales en medicina veterinaria, zootecnia y producción animal. Aquí se integran escenarios clínicos, manejo sanitario, nutrición, sanidad animal y decisiones del campo para fortalecer la práctica profesional en el día a día del estudiante.
 
 ---
 
-## 🏆 Sistema de Gamificación Académica
+## 🎯 Propósito académico
 
-- **6 Rangos Académicos:** *Practicante (0 XP) → Interno (500 XP) → Residente (2000 XP) → Especialista (5000 XP) → Diplomado (10000 XP) → Maestro Clínico (20000 XP)*.
-- **25+ Logros Desbloqueables** que premian diagnósticos acertados, aforos precisos, identificaciones parasitarias y cálculos clínicos.
-- **Racha Diaria de Estudio** con persistencia en `localStorage`.
+VET & ZOO LAB ayuda a conectar la teoría con la práctica en áreas clave de la carrera de zootecnia y medicina veterinaria, como:
+
+- diagnóstico clínico y semiología animal
+- manejo sanitario y bioseguridad
+- alimentación y formulación de raciones
+- observación del animal en producción
+- control de parásitos y plantas tóxicas
+- análisis de casos reales de campo
+
+La experiencia está diseñada para que el estudiante aprenda resolviendo situaciones cercanas a la producción animal, con enfoque de mejora continua y toma de decisiones técnica.
 
 ---
 
-## 🚀 Despliegue en GitHub Pages
+## 🐾 ¿Qué incluye la plataforma?
 
-Este proyecto utiliza **JavaScript ES6 Vanilla**, **Three.js** y **Tailwind CSS**, por lo que **no requiere build ni dependencias de backend**. Es 100% estático y compatible de forma nativa con GitHub Pages.
+### 1. Casos clínicos universitarios
+El módulo de casos presenta situaciones veterinarias y zootécnicas con historia clínica, signos, laboratorio, hipótesis diagnóstica y tratamiento. Permite ejercitar el razonamiento clínico en especies como bovinos, equinos, ovinos y porcinos.
 
-Sitio en vivo:  
-👉 **[https://aglprogamer-byte.github.io/VetZoo_Lab/](https://aglprogamer-byte.github.io/VetZoo_Lab/)**
+### 2. Laboratorio sanitario y bioseguridad
+Se trabaja con planes de vacunación, desparasitación, manejo reproductivo y auditoría sanitaria para comprender la importancia del control preventivo en el hato.
+
+### 3. Nutrición y formulación
+El laboratorio de nutrición permite evaluar raciones, ajustar ingredientes y analizar energía, proteína, fibra y costo de la dieta, con enfoque en la salud productiva del animal.
+
+### 4. Granja virtual 3D
+La granja escolar permite observar el entorno productivo, explorar animales, revisar condiciones y comprender la relación entre manejo, bienestar y productividad.
+
+### 5. Diagnóstico y campo
+La plataforma también incluye herramientas para identificar condiciones del animal, evaluar condición corporal, analizar pastos y reconocer plantas tóxicas y parásitos.
+
+---
+
+## 🌿 Enfoque de formación
+
+El proyecto busca formar profesionales con criterio técnico y capacidad de análisis en:
+
+- sanidad animal
+- nutrición y alimentación
+- producción ganadera
+- diagnóstico clínico
+- bioseguridad y manejo preventivo
+- bienestar animal
+
+Todo esto con un enfoque práctico, visual y orientado a la realidad del campo y la universidad.
+
+---
+
+## 🧭 Objetivos principales
+
+- fortalecer la competencia clínica del estudiante
+- vincular teoría con decisiones reales de producción
+- apoyar la enseñanza en medicina veterinaria y zootecnia
+- promover la observación, el análisis y la resolución de problemas
+- desarrollar criterio profesional en manejo animal
+
+---
+
+## 📚 Perfil de uso
+
+Este entorno es ideal para:
+
+- estudiantes de medicina veterinaria
+- estudiantes de zootecnia
+- docentes de producción animal y salud animal
+- práctica universitaria de casos, manejo y bioseguridad
+
+---
+
+## 🚀 Presentación
+
+VET & ZOO LAB es una herramienta educativa de apoyo a la formación profesional en ciencias pecuarias, centrada en la toma de decisiones técnicas del entorno animal y productivo.
+
+Su objetivo es apoyar la enseñanza de manera dinámica, práctica y cercana a la realidad del campo ganadero y veterinario.

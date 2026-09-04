@@ -7,8 +7,9 @@
 import { store, ACTION_TYPES } from "../core/Store.js";
 import { AudioFx, simEngine } from "../core/SimEngine.js";
 import { achievements } from "../core/Achievements.js";
+import { generateProceduralCases } from "./CaseGenerator.js";
 
-export const UNIVERSITY_CLINICAL_CASES = [
+const BASE_UNIVERSITY_CLINICAL_CASES = [
   {
     id: "case_001",
     code: "CASO 001 — SARA & CRISIS RUMINAL",
@@ -197,6 +198,11 @@ export const UNIVERSITY_CLINICAL_CASES = [
     ],
     rubricPoints: { diagnosis: 40, treatment: 40, reasoning: 20 }
   }
+];
+
+export const UNIVERSITY_CLINICAL_CASES = [
+  ...BASE_UNIVERSITY_CLINICAL_CASES,
+  ...generateProceduralCases(160)
 ];
 
 export class CaseEngine {

@@ -18,7 +18,16 @@ export class SharedNav {
     this.init();
   }
 
+  applyTheme(theme = "light") {
+    const nextTheme = theme === "dark" ? "dark" : "light";
+    document.body.setAttribute("data-theme", nextTheme);
+    localStorage.setItem("vetzoo-theme", nextTheme);
+    return nextTheme;
+  }
+
   init() {
+    const savedTheme = localStorage.getItem("vetzoo-theme") || "light";
+    this.applyTheme(savedTheme);
     this.renderHeader();
     this.setupModals();
     this.bindEvents();
@@ -106,6 +115,10 @@ export class SharedNav {
             <span>🎓</span> <span class="hidden md:inline">Expediente</span>
           </button>
 
+          <button id="btnThemeToggle" class="btn px-2.5 md:px-3 py-1.5 rounded-xl border border-[var(--border)] bg-[var(--surface)] hover:bg-[var(--surface-strong)] text-[11px] md:text-xs font-semibold text-[var(--text)] flex items-center gap-1.5 shadow">
+            <span>☀️</span> <span class="hidden md:inline">Claro</span>
+          </button>
+
           <!-- Botón Menú Móvil -->
           <button id="btnToggleMobileMenu" class="btn lg:hidden p-2 rounded-xl border border-[var(--border)] bg-black/40 text-gray-300 hover:text-white" aria-label="Abrir menú de navegación" aria-expanded="false" aria-controls="mobileMenuDrawer">
             <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path></svg>
@@ -159,6 +172,22 @@ export class SharedNav {
   }
 
   bindEvents() {
+    const btnThemeToggle = document.getElementById("btnThemeToggle");
+    if (btnThemeToggle) {
+      const syncThemeButton = () => {
+        const isDark = document.body.getAttribute("data-theme") === "dark";
+        btnThemeToggle.innerHTML = `<span>${isDark ? "🌙" : "☀️"}</span> <span class="hidden md:inline">${isDark ? "Oscuro" : "Claro"}</span>`;
+      };
+
+      syncThemeButton();
+      btnThemeToggle.onclick = () => {
+        const nextTheme = document.body.getAttribute("data-theme") === "dark" ? "light" : "dark";
+        this.applyTheme(nextTheme);
+        syncThemeButton();
+        AudioFx.click();
+      };
+    }
+
     const btnMenu = document.getElementById("btnToggleMobileMenu");
     const drawer = document.getElementById("mobileMenuDrawer");
     if (btnMenu && drawer) {

@@ -72,7 +72,53 @@ export class HealthCalendar {
     this.selectedProtocolKey = "bovino_leche";
     this.completedTasks = new Set();
     this.activeFilter = "all"; // "all" | "vacuna" | "antiparasitario" | "manejo"
+    this.challenge = this.getChallengeForProtocol(this.selectedProtocolKey);
+    this.challengeSelection = null;
     this.init();
+  }
+
+  getChallengeForProtocol(protocolKey) {
+    const map = {
+      bovino_leche: {
+        title: "Decisión crítica en lechería",
+        prompt: "Un lote de vacas en alta producción presenta caída del 18% en leche y heces ácidas. ¿Qué medida prioritaria debe hacerse primero?",
+        options: [
+          { id: "a", text: "Reforzar fibra efectiva y revisar exceso de almidón en la ración antes de continuar con la rutina diaria.", correct: true, explanation: "Es la corrección inmediata más lógica para reducir la acidosis ruminal y recuperar la producción." },
+          { id: "b", text: "Aumentar el concentrado sin ajustar la dieta para estimular la lactación.", correct: false, explanation: "Aumenta la carga fermentable y empeora la acidosis ruminal." },
+          { id: "c", text: "Ignorar el problema y esperar a la próxima revisión por producción.", correct: false, explanation: "La demora agrava el daño ruminal y la caída de producción." }
+        ]
+      },
+      equino_deporte: {
+        title: "Riesgo clínico en equinos",
+        prompt: "Un caballo de deporte presenta dolor abdominal, sudoración y fermentación en ciego tras ejercicio intenso. ¿Qué decisión de manejo es prioritaria?",
+        options: [
+          { id: "a", text: "Analgesia con flunixina, fluidoterapia y monitoreo continuo del dolor y la motilidad.", correct: true, explanation: "Es la conducta inicial apropiada para cólico de intensidad moderada antes de complicaciones quirúrgicas." },
+          { id: "b", text: "Forzar ejercicio intenso para descomprimir el intestino.", correct: false, explanation: "Hace más daño y aumenta el riesgo de timpanismo o lesión intestinal." },
+          { id: "c", text: "Administrar antibióticos sin evaluar la causa del dolor.", correct: false, explanation: "La analgesia y la evaluación clínica tienen prioridad; los antibióticos no resuelven un cólico mecánico ni espasmódico." }
+        ]
+      },
+      ovino_carne: {
+        title: "Bioseguridad en rebaño",
+        prompt: "Un rebaño ovino presenta edema submandibular, mucosas pálidas y alta carga de Haemonchus. ¿Cuál es la decisión más adecuada para controlar la crisis?",
+        options: [
+          { id: "a", text: "Desparasitación selectiva, manejo del pastoreo y soporte antianémico para reducir la carga parasitaria.", correct: true, explanation: "La gestión integral del pastoreo y el tratamiento específico reducen la anemia y los efectos del parasitismo." },
+          { id: "b", text: "Mantenerlos en el mismo potrero húmedo sin intervención.", correct: false, explanation: "Esto mantiene la presión de infección y empeora la anemia." },
+          { id: "c", text: "Dar solo sal mineral sin controlar el fuerte parasitismo.", correct: false, explanation: "La sal no corrige la pérdida sanguínea ni el daño del parásito." }
+        ]
+      }
+    };
+
+    return map[protocolKey] || map.bovino_leche;
+  }
+
+  evaluateChallenge(choiceId) {
+    const challenge = this.getChallengeForProtocol(this.selectedProtocolKey);
+    const selected = challenge.options.find(option => option.id === choiceId);
+    this.challengeSelection = { choiceId, correct: !!selected?.correct, explanation: selected?.explanation || "" };
+    if (selected?.correct) {
+      achievements.recordCalendarCreated();
+    }
+    this.render();
   }
 
   init() {
@@ -135,6 +181,31 @@ export class HealthCalendar {
           </div>
         </div>
 
+        <div class="glass p-5 rounded-2xl border border-amber-500/30 bg-amber-950/10 space-y-4">
+          <div class="flex items-center justify-between gap-3">
+            <h3 class="display text-base font-bold text-white m-0">🧪 Desafío de decisión sanitaria</h3>
+            <span class="chip text-[10px] uppercase mono">${this.challenge.title}</span>
+          </div>
+          <p class="text-sm text-gray-200 m-0">${this.challenge.prompt}</p>
+          <div class="grid gap-2">
+            ${this.challenge.options.map(option => {
+              const selected = this.challengeSelection?.choiceId === option.id;
+              const success = this.challengeSelection && option.correct;
+              const danger = this.challengeSelection && selected && !option.correct;
+              return `
+                <button data-health-choice="${option.id}" class="btn health-choice-btn text-left p-3 rounded-xl border ${success ? 'border-emerald-500/50 bg-emerald-950/30' : danger ? 'border-rose-500/50 bg-rose-950/30' : 'border-white/10 bg-black/30'} ${selected ? 'ring-1 ring-white/20' : ''}">
+                  <span class="text-xs text-gray-200">${option.text}</span>
+                </button>
+              `;
+            }).join("")}
+          </div>
+          ${this.challengeSelection ? `
+            <div class="p-3 rounded-xl border ${this.challengeSelection.correct ? 'border-emerald-500/40 bg-emerald-950/30 text-emerald-100' : 'border-rose-500/40 bg-rose-950/30 text-rose-100'} text-xs leading-relaxed">
+              <b>${this.challengeSelection.correct ? '✅ Respuesta correcta' : '⚠️ Revisión'}</b>: ${this.challenge.options.find(opt => opt.id === this.challengeSelection.choiceId)?.explanation || this.challengeSelection.explanation}
+            </div>
+          ` : ""}
+        </div>
+
         <!-- Lista de Actividades Sanitarias -->
         <div class="space-y-3">
           ${filteredItems.map(item => {
@@ -185,6 +256,8 @@ export class HealthCalendar {
     this.container.querySelectorAll(".btn-proto").forEach(btn => {
       btn.onclick = () => {
         this.selectedProtocolKey = btn.dataset.proto;
+        this.challenge = this.getChallengeForProtocol(this.selectedProtocolKey);
+        this.challengeSelection = null;
         this.render();
       };
     });
@@ -206,6 +279,13 @@ export class HealthCalendar {
         }
         achievements.recordCalendarCreated();
         this.render();
+      };
+    });
+
+    this.container.querySelectorAll(".health-choice-btn").forEach(btn => {
+      btn.onclick = () => {
+        const selectedId = btn.dataset.healthChoice;
+        this.evaluateChallenge(selectedId);
       };
     });
 

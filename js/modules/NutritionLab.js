@@ -93,8 +93,41 @@ export class NutritionLab {
 
     this.activeStudyCase = null;
     this.lastEvaluation = null;
+    this.decisionChallenge = this.getDecisionChallenge();
+    this.challengeSelection = null;
 
     this.init();
+  }
+
+  getDecisionChallenge() {
+    const scenarios = [
+      {
+        prompt: "La vaca presenta caída de producción y la ración actual tiene exceso de maíz. ¿Cuál es la corrección más adecuada?",
+        options: [
+          { id: "a", text: "Aumentar fibra efectiva y ajustar el maíz para evitar acidosis ruminal.", correct: true, explanation: "La fibra efectiva mejora la rumia, el pH y la producción del hato." },
+          { id: "b", text: "Disminuir la proteína y aumentar más maíz para ganar energía rápida.", correct: false, explanation: "Eso empeora la acidosis y el equilibrio ruminal." },
+          { id: "c", text: "No cambiar nada y esperar al siguiente chequeo.", correct: false, explanation: "El problema se mantiene y la producción sigue cayendo." }
+        ]
+      },
+      {
+        prompt: "Un equino de deporte tiene trabajo intenso; ¿qué estrategia nutricional prioriza su salud digestiva?",
+        options: [
+          { id: "a", text: "Base forrajera alta con granos controlados y ración balanceada.", correct: true, explanation: "El forraje y el control del cereal evitan cólicos e infosura." },
+          { id: "b", text: "Máxima carga de granos para mejorar desempeño inmediato.", correct: false, explanation: "El exceso de granos incrementa riesgo digestivo." },
+          { id: "c", text: "Reducir totalmente el consumo de fibra para mejorar la velocidad.", correct: false, explanation: "Eso afecta la motilidad digestiva y la salud del caballo." }
+        ]
+      }
+    ];
+    return scenarios[Math.floor(Math.random() * scenarios.length)];
+  }
+
+  evaluateDecision(choiceId) {
+    const selected = this.decisionChallenge.options.find(option => option.id === choiceId);
+    this.challengeSelection = { choiceId, correct: !!selected?.correct, explanation: selected?.explanation || "" };
+    if (selected?.correct) {
+      this.store.emit("toast:show", { msg: "🌾 <b>Decisión acertada:</b> tu criterio nutricional está alineado con la salud animal.", type: "success" });
+    }
+    this.render();
   }
 
   init() {
@@ -149,6 +182,31 @@ export class NutritionLab {
               Pulsa <b>Generar Nuevo Enunciado</b> para recibir un problema bromatológico de campo (SARA, pico de lactancia, cólico equino, ceba porcina) y poner a prueba tu cálculo de ración.
             </p>
           `}
+        </div>
+
+        <div class="bg-amber-950/20 border border-amber-500/30 rounded-2xl p-4 space-y-3">
+          <div class="flex items-center justify-between gap-3">
+            <h4 class="font-bold text-xs text-amber-200 uppercase tracking-wider mono m-0">🧠 Decisión nutricional rápida</h4>
+            <span class="chip text-[10px] uppercase mono">Reto práctico</span>
+          </div>
+          <p class="text-sm text-gray-200 m-0">${this.decisionChallenge.prompt}</p>
+          <div class="grid gap-2">
+            ${this.decisionChallenge.options.map(option => {
+              const selected = this.challengeSelection?.choiceId === option.id;
+              const success = this.challengeSelection && option.correct;
+              const danger = this.challengeSelection && selected && !option.correct;
+              return `
+                <button data-nutri-decision="${option.id}" class="btn nutrition-decision-btn text-left p-3 rounded-xl border ${success ? 'border-emerald-500/50 bg-emerald-950/30' : danger ? 'border-rose-500/50 bg-rose-950/30' : 'border-white/10 bg-black/30'} ${selected ? 'ring-1 ring-white/20' : ''}">
+                  <span class="text-xs text-gray-200">${option.text}</span>
+                </button>
+              `;
+            }).join("")}
+          </div>
+          ${this.challengeSelection ? `
+            <div class="p-3 rounded-xl border ${this.challengeSelection.correct ? 'border-emerald-500/40 bg-emerald-950/30 text-emerald-100' : 'border-rose-500/40 bg-rose-950/30 text-rose-100'} text-xs leading-relaxed">
+              <b>${this.challengeSelection.correct ? '✅ Decisión correcta' : '⚠️ Ajusta el criterio'}</b>: ${this.decisionChallenge.options.find(opt => opt.id === this.challengeSelection.choiceId)?.explanation || this.challengeSelection.explanation}
+            </div>
+          ` : ""}
         </div>
 
         <!-- 1. Encabezado de la Estación -->
@@ -400,6 +458,10 @@ export class NutritionLab {
     if (btnEvalCase) {
       btnEvalCase.onclick = () => this.evaluateActiveCase();
     }
+
+    this.container.querySelectorAll(".nutrition-decision-btn").forEach(btn => {
+      btn.onclick = () => this.evaluateDecision(btn.dataset.nutriDecision);
+    });
 
     this.container.addEventListener("input", e => {
       if (e.target.classList.contains("ing-slider")) {
