@@ -32,9 +32,9 @@ export class Farm3D {
     // Cámara y Puntos de Vista de Zonas de la Granja
     this.cameraTargets = {
       overview: { pos: new THREE.Vector3(12, 9, 14), look: new THREE.Vector3(0, 1.0, 0) },
-      pasture:  { pos: new THREE.Vector3(-6, 4.5, 5), look: new THREE.Vector3(-3.5, 0.6, 0) },
-      stable:   { pos: new THREE.Vector3(6, 4, -1),   look: new THREE.Vector3(3.5, 0.8, -2) },
-      feeder:   { pos: new THREE.Vector3(0, 3.5, 6),  look: new THREE.Vector3(0, 0.8, 2.4) }
+      pasture: { pos: new THREE.Vector3(-6, 4.5, 5), look: new THREE.Vector3(-3.5, 0.6, 0) },
+      stable: { pos: new THREE.Vector3(6, 4, -1), look: new THREE.Vector3(3.5, 0.8, -2) },
+      feeder: { pos: new THREE.Vector3(0, 3.5, 6), look: new THREE.Vector3(0, 0.8, 2.4) }
     };
 
     this.currentLookAt = new THREE.Vector3(0, 1.0, 0);
@@ -213,7 +213,7 @@ export class Farm3D {
       if (typeof store !== "undefined" && typeof store.emit === "function") {
         store.emit("toast:show", { msg: `⚠️ <b>Asset 3D</b> no disponible: ${url}`, type: "bad" });
       }
-    } catch (e) {}
+    } catch (e) { }
   }
 
   loadNatureProps() {
@@ -277,9 +277,9 @@ export class Farm3D {
         }
       );
     })))
-    .catch(error => {
-      console.warn("[Farm3D] Error al cargar activos ambientales:", error);
-    });
+      .catch(error => {
+        console.warn("[Farm3D] Error al cargar activos ambientales:", error);
+      });
   }
 
   setZone(zoneId) {

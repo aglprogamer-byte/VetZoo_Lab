@@ -8,87 +8,87 @@
 
 // ─── Definiciones de Rangos Académicos ────────────────────────────────
 export const ACADEMIC_RANKS = [
-  { id: "practicante",  label: "Practicante",   minXP: 0,     icon: "🐣", color: "#9ca3af" },
-  { id: "interno",      label: "Interno",        minXP: 500,   icon: "🩺", color: "#60a5fa" },
-  { id: "residente",    label: "Residente",      minXP: 2000,  icon: "🔬", color: "#a78bfa" },
-  { id: "especialista", label: "Especialista",   minXP: 5000,  icon: "🏅", color: "#fbbf24" },
-  { id: "diplomado",    label: "Diplomado",      minXP: 10000, icon: "🎓", color: "#34d399" },
-  { id: "maestro",      label: "Maestro Clínico",minXP: 20000, icon: "👑", color: "#f472b6" }
+  { id: "practicante", label: "Practicante", minXP: 0, icon: "🐣", color: "#9ca3af" },
+  { id: "interno", label: "Interno", minXP: 500, icon: "🩺", color: "#60a5fa" },
+  { id: "residente", label: "Residente", minXP: 2000, icon: "🔬", color: "#a78bfa" },
+  { id: "especialista", label: "Especialista", minXP: 5000, icon: "🏅", color: "#fbbf24" },
+  { id: "diplomado", label: "Diplomado", minXP: 10000, icon: "🎓", color: "#34d399" },
+  { id: "maestro", label: "Maestro Clínico", minXP: 20000, icon: "👑", color: "#f472b6" }
 ];
 
 // ─── Definiciones de Logros ───────────────────────────────────────────
 export const ACHIEVEMENTS = [
   // Casos Clínicos
-  { id: "first_case",       category: "casos",     label: "Primer Diagnóstico",     desc: "Resolver tu primer caso clínico",                    icon: "🏥", xpReward: 50 },
-  { id: "five_cases",       category: "casos",     label: "Clínico Competente",     desc: "Resolver 5 casos clínicos",                          icon: "⭐", xpReward: 150 },
-  { id: "perfect_case",     category: "casos",     label: "Diagnóstico Perfecto",   desc: "Obtener 100/100 en un caso clínico",                 icon: "💯", xpReward: 300 },
-  { id: "all_cases",        category: "casos",     label: "Clínico Máximo",         desc: "Resolver todos los casos disponibles",                icon: "🏆", xpReward: 500 },
+  { id: "first_case", category: "casos", label: "Primer Diagnóstico", desc: "Resolver tu primer caso clínico", icon: "🏥", xpReward: 50 },
+  { id: "five_cases", category: "casos", label: "Clínico Competente", desc: "Resolver 5 casos clínicos", icon: "⭐", xpReward: 150 },
+  { id: "perfect_case", category: "casos", label: "Diagnóstico Perfecto", desc: "Obtener 100/100 en un caso clínico", icon: "💯", xpReward: 300 },
+  { id: "all_cases", category: "casos", label: "Clínico Máximo", desc: "Resolver todos los casos disponibles", icon: "🏆", xpReward: 500 },
 
   // Pastos & Fertilizantes
-  { id: "first_fert",       category: "pastos",    label: "Agrónomo Novato",        desc: "Aplicar tu primer fertilizante",                      icon: "🌱", xpReward: 30 },
-  { id: "all_ferts",        category: "pastos",    label: "Agrónomo Experto",       desc: "Probar los 7 fertilizantes del catálogo",             icon: "🧪", xpReward: 200 },
-  { id: "excellent_fert",   category: "pastos",    label: "Reacción Excelente",     desc: "Lograr respuesta 'Excelente' en fertilización",       icon: "🌿", xpReward: 75 },
+  { id: "first_fert", category: "pastos", label: "Agrónomo Novato", desc: "Aplicar tu primer fertilizante", icon: "🌱", xpReward: 30 },
+  { id: "all_ferts", category: "pastos", label: "Agrónomo Experto", desc: "Probar los 7 fertilizantes del catálogo", icon: "🧪", xpReward: 200 },
+  { id: "excellent_fert", category: "pastos", label: "Reacción Excelente", desc: "Lograr respuesta 'Excelente' en fertilización", icon: "🌿", xpReward: 75 },
 
   // Diagnóstico
-  { id: "first_hemogram",   category: "diagnostico", label: "Primer Hemograma",    desc: "Realizar tu primer análisis hematológico",            icon: "🔬", xpReward: 40 },
-  { id: "five_hemograms",   category: "diagnostico", label: "Hematólogo",          desc: "Realizar 5 hemogramas completos",                     icon: "🩸", xpReward: 150 },
-  { id: "first_mcmaster",   category: "diagnostico", label: "Parasitólogo",        desc: "Realizar tu primer conteo McMaster",                  icon: "🦠", xpReward: 50 },
+  { id: "first_hemogram", category: "diagnostico", label: "Primer Hemograma", desc: "Realizar tu primer análisis hematológico", icon: "🔬", xpReward: 40 },
+  { id: "five_hemograms", category: "diagnostico", label: "Hematólogo", desc: "Realizar 5 hemogramas completos", icon: "🩸", xpReward: 150 },
+  { id: "first_mcmaster", category: "diagnostico", label: "Parasitólogo", desc: "Realizar tu primer conteo McMaster", icon: "🦠", xpReward: 50 },
 
   // Calculadoras
-  { id: "first_calc",       category: "calculadoras", label: "Calculista Clínico", desc: "Usar tu primera calculadora veterinaria",             icon: "📐", xpReward: 25 },
-  { id: "ten_calcs",        category: "calculadoras", label: "Precisión Matemática",desc: "Realizar 10 cálculos clínicos",                      icon: "🎯", xpReward: 120 },
+  { id: "first_calc", category: "calculadoras", label: "Calculista Clínico", desc: "Usar tu primera calculadora veterinaria", icon: "📐", xpReward: 25 },
+  { id: "ten_calcs", category: "calculadoras", label: "Precisión Matemática", desc: "Realizar 10 cálculos clínicos", icon: "🎯", xpReward: 120 },
 
   // Parásitos
-  { id: "first_parasite",   category: "parasitos",  label: "Ojo Clínico",          desc: "Identificar tu primer parásito en el microscopio",    icon: "👁️", xpReward: 40 },
-  { id: "all_parasites",    category: "parasitos",  label: "Maestro Parasitólogo", desc: "Identificar todas las especies parasitarias",         icon: "🏅", xpReward: 400 },
+  { id: "first_parasite", category: "parasitos", label: "Ojo Clínico", desc: "Identificar tu primer parásito en el microscopio", icon: "👁️", xpReward: 40 },
+  { id: "all_parasites", category: "parasitos", label: "Maestro Parasitólogo", desc: "Identificar todas las especies parasitarias", icon: "🏅", xpReward: 400 },
 
   // BCS
-  { id: "first_bcs",        category: "bcs",       label: "Evaluador de Campo",    desc: "Completar tu primera evaluación de BCS",              icon: "🐄", xpReward: 35 },
-  { id: "perfect_bcs",      category: "bcs",       label: "Ojo Experto",           desc: "Acertar 10 evaluaciones de BCS consecutivas",         icon: "🎯", xpReward: 250 },
+  { id: "first_bcs", category: "bcs", label: "Evaluador de Campo", desc: "Completar tu primera evaluación de BCS", icon: "🐄", xpReward: 35 },
+  { id: "perfect_bcs", category: "bcs", label: "Ojo Experto", desc: "Acertar 10 evaluaciones de BCS consecutivas", icon: "🎯", xpReward: 250 },
 
   // Examen
-  { id: "first_timed",      category: "examen",    label: "Bajo Presión",          desc: "Completar tu primer examen cronometrado",             icon: "⏱️", xpReward: 100 },
-  { id: "timed_pass",       category: "examen",    label: "Nervios de Acero",      desc: "Aprobar un examen cronometrado con ≥80 pts",          icon: "🧊", xpReward: 300 },
+  { id: "first_timed", category: "examen", label: "Bajo Presión", desc: "Completar tu primer examen cronometrado", icon: "⏱️", xpReward: 100 },
+  { id: "timed_pass", category: "examen", label: "Nervios de Acero", desc: "Aprobar un examen cronometrado con ≥80 pts", icon: "🧊", xpReward: 300 },
 
   // Cuaderno
-  { id: "first_note",       category: "cuaderno",  label: "Buen Observador",       desc: "Crear tu primera nota de campo",                     icon: "📓", xpReward: 20 },
-  { id: "ten_notes",        category: "cuaderno",  label: "Cronista Veterinario",  desc: "Registrar 10 entradas en el cuaderno de campo",       icon: "📖", xpReward: 100 },
+  { id: "first_note", category: "cuaderno", label: "Buen Observador", desc: "Crear tu primera nota de campo", icon: "📓", xpReward: 20 },
+  { id: "ten_notes", category: "cuaderno", label: "Cronista Veterinario", desc: "Registrar 10 entradas en el cuaderno de campo", icon: "📖", xpReward: 100 },
 
   // Plantas Tóxicas
-  { id: "first_plant_quiz", category: "plantas",   label: "Botánico Clínico",      desc: "Resolver tu primer quiz de plantas tóxicas",          icon: "🌿", xpReward: 40 },
-  { id: "all_plant_quizzes",category: "plantas",   label: "Toxicólogo Vegetal",    desc: "Resolver todos los quiz de plantas tóxicas",          icon: "☠️", xpReward: 250 },
+  { id: "first_plant_quiz", category: "plantas", label: "Botánico Clínico", desc: "Resolver tu primer quiz de plantas tóxicas", icon: "🌿", xpReward: 40 },
+  { id: "all_plant_quizzes", category: "plantas", label: "Toxicólogo Vegetal", desc: "Resolver todos los quiz de plantas tóxicas", icon: "☠️", xpReward: 250 },
 
   // Racha
-  { id: "streak_3",         category: "racha",     label: "Constancia",            desc: "Estudiar 3 días seguidos",                           icon: "🔥", xpReward: 75 },
-  { id: "streak_7",         category: "racha",     label: "Semana Académica",      desc: "Estudiar 7 días seguidos",                           icon: "💪", xpReward: 200 },
-  { id: "streak_30",        category: "racha",     label: "Disciplina de Hierro",  desc: "Estudiar 30 días seguidos",                          icon: "🏆", xpReward: 1000 },
+  { id: "streak_3", category: "racha", label: "Constancia", desc: "Estudiar 3 días seguidos", icon: "🔥", xpReward: 75 },
+  { id: "streak_7", category: "racha", label: "Semana Académica", desc: "Estudiar 7 días seguidos", icon: "💪", xpReward: 200 },
+  { id: "streak_30", category: "racha", label: "Disciplina de Hierro", desc: "Estudiar 30 días seguidos", icon: "🏆", xpReward: 1000 },
 
   // Sanitario
-  { id: "first_calendar",   category: "sanitario", label: "Planificador",          desc: "Crear tu primer cronograma sanitario",               icon: "📋", xpReward: 50 },
+  { id: "first_calendar", category: "sanitario", label: "Planificador", desc: "Crear tu primer cronograma sanitario", icon: "📋", xpReward: 50 },
 
   // Tiempos de Retiro
-  { id: "first_withdrawal", category: "retiro",    label: "Inocuidad Alimentaria", desc: "Consultar tu primer tiempo de retiro",               icon: "💉", xpReward: 30 },
+  { id: "first_withdrawal", category: "retiro", label: "Inocuidad Alimentaria", desc: "Consultar tu primer tiempo de retiro", icon: "💉", xpReward: 30 },
 ];
 
 // ─── Tabla de XP por acción ───────────────────────────────────────────
 export const XP_ACTIONS = {
-  CASE_SOLVED:       60,
-  CASE_PERFECT:      120,
-  HEMOGRAM_DONE:     25,
-  MCMASTER_DONE:     30,
-  CALCULATOR_USED:   15,
-  FERTILIZER_APPLIED:20,
-  FERTILIZER_EXCEL:  40,
-  PARASITE_ID:       20,
-  BCS_CORRECT:       15,
-  BCS_PERFECT_RUN:   80,
-  TIMED_EXAM_DONE:   50,
-  TIMED_EXAM_PASS:   100,
-  FIELD_NOTE_ADDED:  10,
-  PLANT_QUIZ_CORRECT:25,
-  CALENDAR_CREATED:  30,
-  WITHDRAWAL_CHECK:  10,
-  DAILY_LOGIN:       10,
+  CASE_SOLVED: 60,
+  CASE_PERFECT: 120,
+  HEMOGRAM_DONE: 25,
+  MCMASTER_DONE: 30,
+  CALCULATOR_USED: 15,
+  FERTILIZER_APPLIED: 20,
+  FERTILIZER_EXCEL: 40,
+  PARASITE_ID: 20,
+  BCS_CORRECT: 15,
+  BCS_PERFECT_RUN: 80,
+  TIMED_EXAM_DONE: 50,
+  TIMED_EXAM_PASS: 100,
+  FIELD_NOTE_ADDED: 10,
+  PLANT_QUIZ_CORRECT: 25,
+  CALENDAR_CREATED: 30,
+  WITHDRAWAL_CHECK: 10,
+  DAILY_LOGIN: 10,
 };
 
 const STORAGE_KEY = "vetzoo_achievements";
@@ -318,8 +318,8 @@ export class AchievementEngine {
     this.addXP(XP_ACTIONS.DAILY_LOGIN, "daily_login", `Día ${this.data.streak.current} de racha`);
 
     // Logros de racha
-    if (this.data.streak.current >= 3)  this.tryUnlockAchievement("streak_3");
-    if (this.data.streak.current >= 7)  this.tryUnlockAchievement("streak_7");
+    if (this.data.streak.current >= 3) this.tryUnlockAchievement("streak_3");
+    if (this.data.streak.current >= 7) this.tryUnlockAchievement("streak_7");
     if (this.data.streak.current >= 30) this.tryUnlockAchievement("streak_30");
 
     this._save();
@@ -360,7 +360,7 @@ export class AchievementEngine {
   recordCalculation(calcName) {
     this.addXP(XP_ACTIONS.CALCULATOR_USED, "calculator", calcName);
     const count = this.incrementCounter("calculations_done");
-    if (count >= 1)  this.tryUnlockAchievement("first_calc");
+    if (count >= 1) this.tryUnlockAchievement("first_calc");
     if (count >= 10) this.tryUnlockAchievement("ten_calcs");
   }
 
@@ -410,7 +410,7 @@ export class AchievementEngine {
   recordFieldNote() {
     this.addXP(XP_ACTIONS.FIELD_NOTE_ADDED, "field_note", "Nota de campo");
     const count = this.incrementCounter("field_notes_added");
-    if (count >= 1)  this.tryUnlockAchievement("first_note");
+    if (count >= 1) this.tryUnlockAchievement("first_note");
     if (count >= 10) this.tryUnlockAchievement("ten_notes");
   }
 

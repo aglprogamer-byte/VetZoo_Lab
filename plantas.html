@@ -5,23 +5,23 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Plantas Tóxicas de Importancia Veterinaria | Vet & Zoo Lab</title>
   <meta name="description" content="Guía clínica y atlas de plantas tóxicas tropicales y andinas para rumiantes y equinos: fotosensibilización, cardiotóxicas, alcaloides pirrolizidínicos y quiz.">
-  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🌿</text></svg>">
+  <link href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🌿</text></svg>" rel="icon">
 
   <!-- Google Fonts -->
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com" rel="preconnect">
+  <link href="https://fonts.gstatic.com" rel="preconnect" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600;700&family=Inter:wght@400;500;600;700;800&family=Space+Grotesk:wght@600;700;800&display=swap" rel="stylesheet">
 
   <!-- Tailwind CSS -->
   <script src="https://cdn.tailwindcss.com"></script>
 
   <!-- Custom Styles -->
-  <link rel="stylesheet" href="css/styles.css">
+  <link href="css/styles.css" rel="stylesheet">
 </head>
 
 <body>
   <!-- Contenedor Toast -->
-  <div id="toast" class="fixed right-4 top-4 z-50 max-w-sm space-y-2"></div>
+  <div class="fixed right-4 top-4 z-50 max-w-sm space-y-2" id="toast"></div>
 
   <!-- Barra de Navegación Global -->
   <header class="max-w-7xl mx-auto px-4 pt-4" id="sharedNavContainer"></header>
@@ -43,21 +43,21 @@
 
         <!-- Botones de Modo -->
         <div class="flex gap-2 bg-black/40 p-1 rounded-2xl border border-[var(--border)]">
-          <button id="btnTabCatalog" class="btn px-4 py-1.5 rounded-xl text-xs font-semibold bg-emerald-950/80 text-emerald-300 border border-emerald-500/40">
+          <button class="btn px-4 py-1.5 rounded-xl text-xs font-semibold bg-emerald-950/80 text-emerald-300 border border-emerald-500/40" id="btnTabCatalog">
             📚 Catálogo Botánico (18)
           </button>
-          <button id="btnTabQuiz" class="btn px-4 py-1.5 rounded-xl text-xs font-semibold text-gray-400 hover:text-white">
+          <button class="btn px-4 py-1.5 rounded-xl text-xs font-semibold text-gray-400 hover:text-white" id="btnTabQuiz">
             🧠 Quiz de Casos Toxicológicos
           </button>
         </div>
       </div>
 
       <!-- Vista 1: Catálogo Filtrable -->
-      <div id="plantsCatalogView" class="space-y-4">
+      <div class="space-y-4" id="plantsCatalogView">
         <!-- Barra de Búsqueda y Filtros -->
         <div class="flex flex-wrap items-center justify-between gap-3">
           <div class="flex-1 min-w-[260px]">
-            <input type="text" id="inputSearchPlant" placeholder="🔍 Buscar por nombre común, científico o principio activo..." class="w-full bg-black/50 border border-[var(--border)] rounded-xl p-2.5 text-xs text-white">
+            <input class="w-full bg-black/50 border border-[var(--border)] rounded-xl p-2.5 text-xs text-white" id="inputSearchPlant" type="text" placeholder="🔍 Buscar por nombre común, científico o principio activo...">
           </div>
 
           <div class="flex flex-wrap gap-1.5 text-xs" id="plantFilterButtons">
@@ -73,7 +73,7 @@
       </div>
 
       <!-- Vista 2: Quiz Clínico -->
-      <div id="plantsQuizView" class="hidden space-y-6"></div>
+      <div class="hidden space-y-6" id="plantsQuizView"></div>
     </div>
   </main>
 
@@ -86,7 +86,7 @@
   <script type="module">
     import { SharedNav } from "./js/ui/SharedNav.js";
     import { toxicPlantsEngine } from "./js/modules/ToxicPlantsDB.js";
-    import { achievements } from "./core/Achievements.js";
+    import { achievements } from "./js/core/Achievements.js";
 
     let activeFilter = "all";
     let searchQuery = "";
