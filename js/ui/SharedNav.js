@@ -68,7 +68,7 @@ export class SharedNav {
           </div>
           <div>
             <div class="flex items-center gap-2">
-              <h1 class="display text-base md:text-lg font-bold tracking-tight text-white m-0">VET & ZOO LAB</h1>
+              <h1 class="display text-base md:text-lg font-bold tracking-tight m-0" style="color: var(--text);">VET & ZOO LAB</h1>
               <span class="text-[9px] md:text-[10px] mono px-2 py-0.5 rounded bg-emerald-950/70 border border-emerald-500/30 text-emerald-300 font-semibold uppercase">Universidad 3D</span>
             </div>
             <p class="text-[11px] text-[var(--muted)] mono m-0 hidden sm:block">Campus Virtual Docente · Medicina Veterinaria & Zootecnia</p>
@@ -93,7 +93,7 @@ export class SharedNav {
           <!-- Día y Presupuesto -->
           <div class="chip hidden md:flex items-center gap-1.5 text-xs py-1.5 px-2.5">
             <span class="text-[var(--muted)]">📅</span>
-            <span id="navDayLabel" class="mono font-bold text-white text-[11px]">Día ${day}/30</span>
+            <span id="navDayLabel" class="mono font-bold text-[11px]" style="color: var(--text);">Día ${day}/30</span>
           </div>
 
           <div class="chip hidden lg:flex items-center gap-1.5 text-xs py-1.5 px-2.5">
@@ -131,7 +131,7 @@ export class SharedNav {
         ${pages.map(p => {
       const isActive = p.id === this.activePage;
       return `
-            <a href="${p.href}" class="nav-link btn px-3 py-2 rounded-xl text-xs font-semibold border whitespace-nowrap ${isActive ? 'bg-emerald-950/70 text-emerald-300 border-emerald-500/50 shadow-md ring-1 ring-emerald-500/30' : 'bg-black/30 text-gray-400 border-[var(--border)] hover:bg-white/5 hover:text-white'} flex items-center gap-1.5 no-underline" aria-current="${isActive ? 'page' : 'false'}" aria-label="Ir a ${p.label}">
+            <a href="${p.href}" class="nav-link btn px-3 py-2 rounded-xl text-xs font-semibold border whitespace-nowrap ${isActive ? 'bg-emerald-950/70 text-emerald-300 border-emerald-500/50 shadow-md ring-1 ring-emerald-500/30' : 'bg-black/30 text-[var(--text-secondary)] border-[var(--border)] hover:bg-white/5 hover:text-[var(--text)]'} flex items-center gap-1.5 no-underline" aria-current="${isActive ? 'page' : 'false'}" aria-label="Ir a ${p.label}">
               <span aria-hidden="true">${p.icon}</span> ${p.label}
             </a>
           `;
@@ -143,7 +143,7 @@ export class SharedNav {
         ${pages.map(p => {
       const isActive = p.id === this.activePage;
       return `
-            <a href="${p.href}" class="btn p-2 rounded-xl text-xs font-semibold border ${isActive ? 'bg-emerald-950/70 text-emerald-300 border-emerald-500/50' : 'bg-black/20 text-gray-300 border-white/5 hover:bg-white/5'} flex items-center gap-1.5 no-underline" aria-current="${isActive ? 'page' : 'false'}" aria-label="Ir a ${p.label}">
+            <a href="${p.href}" class="btn p-2 rounded-xl text-xs font-semibold border ${isActive ? 'bg-emerald-950/70 text-emerald-300 border-emerald-500/50' : 'bg-black/20 text-[var(--text-secondary)] border-white/5 hover:bg-white/5'} flex items-center gap-1.5 no-underline" aria-current="${isActive ? 'page' : 'false'}" aria-label="Ir a ${p.label}">
               <span aria-hidden="true">${p.icon}</span> ${p.label}
             </a>
           `;

@@ -1,13 +1,13 @@
 :root {
-  --bg: #f4f9f3;
-  --bg-secondary: #eaf5eb;
-  --panel: rgba(255, 255, 255, 0.78);
-  --panel-hover: rgba(236, 248, 240, 0.98);
-  --panel-border: rgba(22, 101, 52, 0.14);
-  --border: rgba(22, 101, 52, 0.14);
-  --border-focus: rgba(34, 197, 94, 0.45);
-  --surface: rgba(255, 255, 255, 0.8);
-  --surface-strong: rgba(236, 248, 240, 0.95);
+  --bg: #edf7f1;
+  --bg-secondary: #e4f3ea;
+  --panel: rgba(255, 255, 255, 0.88);
+  --panel-hover: rgba(245, 251, 247, 0.96);
+  --panel-border: rgba(22, 70, 58, 0.14);
+  --border: rgba(22, 70, 58, 0.15);
+  --border-focus: rgba(22, 163, 74, 0.38);
+  --surface: rgba(255, 255, 255, 0.9);
+  --surface-strong: rgba(241, 250, 245, 0.96);
 
   --green: #16a34a;
   --green-light: #4ade80;
@@ -20,10 +20,27 @@
   --red: #dc2626;
   --purple: #7c3aed;
 
-  --text: #122016;
-  --text-secondary: #1f2d1f;
-  --muted: #55715c;
+  --text: #16352f;
+  --text-secondary: #2f4f48;
+  --muted: #5b726a;
   --radius: 1rem;
+}
+
+body[data-theme="light"],
+body:not([data-theme="dark"]) {
+  --bg: #edf7f1;
+  --bg-secondary: #e4f3ea;
+  --panel: rgba(255, 255, 255, 0.88);
+  --panel-hover: rgba(245, 251, 247, 0.96);
+  --panel-border: rgba(22, 70, 58, 0.14);
+  --border: rgba(22, 70, 58, 0.15);
+  --border-focus: rgba(22, 163, 74, 0.38);
+  --surface: rgba(255, 255, 255, 0.9);
+  --surface-strong: rgba(241, 250, 245, 0.96);
+
+  --text: #16352f;
+  --text-secondary: #2f4f48;
+  --muted: #5b726a;
 }
 
 body[data-theme="dark"] {
@@ -71,12 +88,246 @@ body {
   -webkit-font-smoothing: antialiased;
 }
 
+body[data-theme="light"] {
+  background:
+    radial-gradient(circle at 12% 8%, rgba(34, 197, 94, 0.08), transparent 36%),
+    radial-gradient(circle at 88% 15%, rgba(14, 165, 233, 0.08), transparent 40%),
+    radial-gradient(circle at 50% 90%, rgba(13, 148, 136, 0.08), transparent 45%),
+    var(--bg);
+}
+
 body[data-theme="dark"] {
   background:
     radial-gradient(circle at 12% 8%, rgba(56, 189, 248, 0.09), transparent 36%),
     radial-gradient(circle at 88% 15%, rgba(16, 185, 129, 0.11), transparent 40%),
     radial-gradient(circle at 50% 90%, rgba(20, 184, 166, 0.08), transparent 45%),
     var(--bg);
+}
+
+body {
+  overflow-x: hidden;
+}
+
+body[data-theme="light"] h1,
+body[data-theme="light"] h2,
+body[data-theme="light"] h3,
+body[data-theme="light"] h4,
+body[data-theme="light"] h5,
+body[data-theme="light"] h6,
+body[data-theme="light"] .display,
+body[data-theme="light"] .display *,
+body[data-theme="light"] .feature-card h3,
+body[data-theme="light"] .feature-card h4,
+body[data-theme="light"] .feature-card h5,
+body[data-theme="light"] .glass h3,
+body[data-theme="light"] .glass h4,
+body[data-theme="light"] .hud-card h3,
+body[data-theme="light"] .hud-card h4,
+body:not([data-theme="dark"]) h1,
+body:not([data-theme="dark"]) h2,
+body:not([data-theme="dark"]) h3,
+body:not([data-theme="dark"]) h4,
+body:not([data-theme="dark"]) h5,
+body:not([data-theme="dark"]) h6,
+body:not([data-theme="dark"]) .display,
+body:not([data-theme="dark"]) .display *,
+body:not([data-theme="dark"]) .feature-card h3,
+body:not([data-theme="dark"]) .feature-card h4,
+body:not([data-theme="dark"]) .feature-card h5,
+body:not([data-theme="dark"]) .glass h3,
+body:not([data-theme="dark"]) .glass h4,
+body:not([data-theme="dark"]) .hud-card h3,
+body:not([data-theme="dark"]) .hud-card h4 {
+  color: var(--text) !important;
+}
+
+body[data-theme="light"] p,
+body[data-theme="light"] li,
+body[data-theme="light"] .text-gray-300,
+body[data-theme="light"] .text-gray-400,
+body[data-theme="light"] .text-gray-500,
+body[data-theme="light"] .text-slate-300,
+body[data-theme="light"] .text-slate-400,
+body[data-theme="light"] .text-[var(--muted)],
+body[data-theme="light"] .feature-card p,
+body[data-theme="light"] .glass p,
+body[data-theme="light"] .hud-card p,
+body:not([data-theme="dark"]) p,
+body:not([data-theme="dark"]) li,
+body:not([data-theme="dark"]) .text-gray-300,
+body:not([data-theme="dark"]) .text-gray-400,
+body:not([data-theme="dark"]) .text-gray-500,
+body:not([data-theme="dark"]) .text-slate-300,
+body:not([data-theme="dark"]) .text-slate-400,
+body:not([data-theme="dark"]) .text-[var(--muted)],
+body:not([data-theme="dark"]) .feature-card p,
+body:not([data-theme="dark"]) .glass p,
+body:not([data-theme="dark"]) .hud-card p {
+  color: var(--text-secondary) !important;
+}
+
+body[data-theme="light"] .text-white,
+body[data-theme="light"] .text-slate-50,
+body[data-theme="light"] .text-slate-200,
+body[data-theme="light"] .text-gray-100,
+body[data-theme="light"] .text-gray-200,
+body[data-theme="light"] .text-gray-300,
+body[data-theme="light"] .text-gray-400,
+body[data-theme="light"] .text-gray-500,
+body:not([data-theme="dark"]) .text-white,
+body:not([data-theme="dark"]) .text-slate-50,
+body:not([data-theme="dark"]) .text-slate-200,
+body:not([data-theme="dark"]) .text-gray-100,
+body:not([data-theme="dark"]) .text-gray-200,
+body:not([data-theme="dark"]) .text-gray-300,
+body:not([data-theme="dark"]) .text-gray-400,
+body:not([data-theme="dark"]) .text-gray-500 {
+  color: var(--text) !important;
+}
+
+body[data-theme="light"] .badge-tag,
+body[data-theme="light"] .chip,
+body[data-theme="light"] .btn,
+body[data-theme="light"] .nav-link,
+body[data-theme="light"] .feature-card,
+body[data-theme="light"] .glass,
+body[data-theme="light"] .hud-card,
+body:not([data-theme="dark"]) .badge-tag,
+body:not([data-theme="dark"]) .chip,
+body:not([data-theme="dark"]) .btn,
+body:not([data-theme="dark"]) .nav-link,
+body:not([data-theme="dark"]) .feature-card,
+body:not([data-theme="dark"]) .glass,
+body:not([data-theme="dark"]) .hud-card {
+  color: var(--text) !important;
+}
+
+body[data-theme="light"] .text-[var(--muted)],
+body:not([data-theme="dark"]) .text-[var(--muted)] {
+  color: var(--muted) !important;
+}
+
+body[data-theme="light"] .glass,
+body[data-theme="light"] .chip,
+body[data-theme="light"] .hud-card,
+body[data-theme="light"] .feature-card,
+body[data-theme="light"] .glass-subtle,
+body:not([data-theme="dark"]) .glass,
+body:not([data-theme="dark"]) .chip,
+body:not([data-theme="dark"]) .hud-card,
+body:not([data-theme="dark"]) .feature-card,
+body:not([data-theme="dark"]) .glass-subtle {
+  border-color: var(--border) !important;
+  box-shadow: 0 14px 40px rgba(20, 40, 31, 0.08) !important;
+  background: var(--panel) !important;
+}
+
+body[data-theme="light"] .bg-black\/40,
+body[data-theme="light"] .bg-black\/50,
+body[data-theme="light"] .bg-black\/60,
+body[data-theme="light"] .bg-emerald-950\/70,
+body[data-theme="light"] .bg-emerald-950\/40,
+body[data-theme="light"] .bg-blue-950\/50,
+body[data-theme="light"] .bg-zinc-950\/40,
+body:not([data-theme="dark"]) .bg-black\/40,
+body:not([data-theme="dark"]) .bg-black\/50,
+body:not([data-theme="dark"]) .bg-black\/60,
+body:not([data-theme="dark"]) .bg-emerald-950\/70,
+body:not([data-theme="dark"]) .bg-emerald-950\/40,
+body:not([data-theme="dark"]) .bg-blue-950\/50,
+body:not([data-theme="dark"]) .bg-zinc-950\/40 {
+  background-color: rgba(255, 255, 255, 0.72) !important;
+}
+
+body[data-theme="light"] .text-emerald-300,
+body[data-theme="light"] .text-teal-300,
+body[data-theme="light"] .text-blue-300,
+body[data-theme="light"] .text-amber-300,
+body[data-theme="light"] .text-rose-300,
+body[data-theme="light"] .text-emerald-400,
+body[data-theme="light"] .text-teal-400,
+body[data-theme="light"] .text-blue-400,
+body[data-theme="light"] .text-amber-400,
+body[data-theme="light"] .text-rose-400,
+body:not([data-theme="dark"]) .text-emerald-300,
+body:not([data-theme="dark"]) .text-teal-300,
+body:not([data-theme="dark"]) .text-blue-300,
+body:not([data-theme="dark"]) .text-amber-300,
+body:not([data-theme="dark"]) .text-rose-300,
+body:not([data-theme="dark"]) .text-emerald-400,
+body:not([data-theme="dark"]) .text-teal-400,
+body:not([data-theme="dark"]) .text-blue-400,
+body:not([data-theme="dark"]) .text-amber-400,
+body:not([data-theme="dark"]) .text-rose-400 {
+  color: var(--text) !important;
+}
+
+body[data-theme="light"] .border-white\/5,
+body[data-theme="light"] .border-white\/10,
+body[data-theme="light"] .border-white\/20,
+body[data-theme="light"] .border-emerald-500\/30,
+body[data-theme="light"] .border-teal-500\/30,
+body[data-theme="light"] .border-blue-500\/30,
+body[data-theme="light"] .border-amber-500\/30,
+body[data-theme="light"] .border-rose-500\/30,
+body[data-theme="light"] .border-[var(--border)],
+body:not([data-theme="dark"]) .border-white\/5,
+body:not([data-theme="dark"]) .border-white\/10,
+body:not([data-theme="dark"]) .border-white\/20,
+body:not([data-theme="dark"]) .border-emerald-500\/30,
+body:not([data-theme="dark"]) .border-teal-500\/30,
+body:not([data-theme="dark"]) .border-blue-500\/30,
+body:not([data-theme="dark"]) .border-amber-500\/30,
+body:not([data-theme="dark"]) .border-rose-500\/30,
+body:not([data-theme="dark"]) .border-[var(--border)] {
+  border-color: var(--border) !important;
+}
+
+body[data-theme="light"] #sharedNavContainer .display,
+body[data-theme="light"] #sharedNavContainer h1,
+body[data-theme="light"] #sharedNavContainer .text-white,
+body[data-theme="light"] #sharedNavContainer .text-gray-300,
+body[data-theme="light"] #sharedNavContainer .text-gray-400,
+body[data-theme="light"] #sharedNavContainer .text-[var(--muted)],
+body:not([data-theme="dark"]) #sharedNavContainer .display,
+body:not([data-theme="dark"]) #sharedNavContainer h1,
+body:not([data-theme="dark"]) #sharedNavContainer .text-white,
+body:not([data-theme="dark"]) #sharedNavContainer .text-gray-300,
+body:not([data-theme="dark"]) #sharedNavContainer .text-gray-400,
+body:not([data-theme="dark"]) #sharedNavContainer .text-[var(--muted)] {
+  color: var(--text) !important;
+}
+
+body[data-theme="light"] .nav-link,
+body[data-theme="light"] .btn,
+body:not([data-theme="dark"]) .nav-link,
+body:not([data-theme="dark"]) .btn {
+  color: var(--text) !important;
+}
+
+body[data-theme="light"] .btn.bg-gradient-to-r,
+body[data-theme="light"] .btn.bg-emerald-950\/70,
+body[data-theme="light"] .btn.bg-emerald-950\/40,
+body[data-theme="light"] .btn.bg-black\/50,
+body[data-theme="light"] .btn.bg-black\/30,
+body:not([data-theme="dark"]) .btn.bg-gradient-to-r,
+body:not([data-theme="dark"]) .btn.bg-emerald-950\/70,
+body:not([data-theme="dark"]) .btn.bg-emerald-950\/40,
+body:not([data-theme="dark"]) .btn.bg-black\/50,
+body:not([data-theme="dark"]) .btn.bg-black\/30 {
+  color: var(--text) !important;
+}
+
+body[data-theme="light"] .btn.bg-gradient-to-r,
+body:not([data-theme="dark"]) .btn.bg-gradient-to-r {
+  color: white !important;
+}
+
+body[data-theme="light"] a,
+body[data-theme="light"] a:visited,
+body:not([data-theme="dark"]) a,
+body:not([data-theme="dark"]) a:visited {
+  color: inherit;
 }
 
 body {
