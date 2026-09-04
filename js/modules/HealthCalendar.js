@@ -189,15 +189,15 @@ export class HealthCalendar {
           <p class="text-sm text-gray-200 m-0">${this.challenge.prompt}</p>
           <div class="grid gap-2">
             ${this.challenge.options.map(option => {
-              const selected = this.challengeSelection?.choiceId === option.id;
-              const success = this.challengeSelection && option.correct;
-              const danger = this.challengeSelection && selected && !option.correct;
-              return `
+      const selected = this.challengeSelection?.choiceId === option.id;
+      const success = this.challengeSelection && option.correct;
+      const danger = this.challengeSelection && selected && !option.correct;
+      return `
                 <button data-health-choice="${option.id}" class="btn health-choice-btn text-left p-3 rounded-xl border ${success ? 'border-emerald-500/50 bg-emerald-950/30' : danger ? 'border-rose-500/50 bg-rose-950/30' : 'border-white/10 bg-black/30'} ${selected ? 'ring-1 ring-white/20' : ''}">
                   <span class="text-xs text-gray-200">${option.text}</span>
                 </button>
               `;
-            }).join("")}
+    }).join("")}
           </div>
           ${this.challengeSelection ? `
             <div class="p-3 rounded-xl border ${this.challengeSelection.correct ? 'border-emerald-500/40 bg-emerald-950/30 text-emerald-100' : 'border-rose-500/40 bg-rose-950/30 text-rose-100'} text-xs leading-relaxed">
@@ -209,8 +209,8 @@ export class HealthCalendar {
         <!-- Lista de Actividades Sanitarias -->
         <div class="space-y-3">
           ${filteredItems.map(item => {
-            const isDone = this.completedTasks.has(item.id);
-            return `
+      const isDone = this.completedTasks.has(item.id);
+      return `
               <div class="glass p-4 rounded-2xl border ${item.official ? 'border-amber-500/40 bg-amber-950/10' : 'border-[var(--border)] bg-black/30'} flex flex-wrap items-center justify-between gap-3 hover:border-blue-500/40 transition">
                 <div class="flex items-start gap-3 flex-1 min-w-[280px]">
                   <input type="checkbox" class="task-checkbox accent-emerald-500 w-5 h-5 rounded mt-0.5 cursor-pointer" data-id="${item.id}" ${isDone ? 'checked' : ''}>
@@ -231,7 +231,7 @@ export class HealthCalendar {
                 </div>
               </div>
             `;
-          }).join("")}
+    }).join("")}
         </div>
 
         <!-- Botón de Auditoría Sanitaria -->

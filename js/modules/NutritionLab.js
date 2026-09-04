@@ -83,12 +83,12 @@ export class NutritionLab {
     this.store = storeInstance;
     this.simEngine = simEngineInstance;
     this.ingredients = [
-      { id: "maiz",     name: "Maíz molido",       type: "Energético",  color: "#f59e0b" },
-      { id: "soya",     name: "Harina de Soya 48%",type: "Proteico",    color: "#3b82f6" },
-      { id: "ensilaje", name: "Ensilaje de Maíz",  type: "Forraje",     color: "#10b981" },
-      { id: "heno",     name: "Heno de Alfalfa",   type: "Fibra/Prot.", color: "#84cc16" },
-      { id: "melaza",   name: "Melaza de Caña",    type: "Energético",  color: "#d97706" },
-      { id: "nuc",      name: "Núcleo Mineral/Vit",type: "Mineral",     color: "#ec4899" }
+      { id: "maiz", name: "Maíz molido", type: "Energético", color: "#f59e0b" },
+      { id: "soya", name: "Harina de Soya 48%", type: "Proteico", color: "#3b82f6" },
+      { id: "ensilaje", name: "Ensilaje de Maíz", type: "Forraje", color: "#10b981" },
+      { id: "heno", name: "Heno de Alfalfa", type: "Fibra/Prot.", color: "#84cc16" },
+      { id: "melaza", name: "Melaza de Caña", type: "Energético", color: "#d97706" },
+      { id: "nuc", name: "Núcleo Mineral/Vit", type: "Mineral", color: "#ec4899" }
     ];
 
     this.activeStudyCase = null;
@@ -139,11 +139,11 @@ export class NutritionLab {
   generateRandomStudyCase() {
     const idx = Math.floor(Math.random() * NUTRITION_EXAM_CASES.length);
     this.activeStudyCase = NUTRITION_EXAM_CASES[idx];
-    
+
     if (this.activeStudyCase.targetAnimalId) {
       this.store.dispatch(ACTION_TYPES.SELECT_ANIMAL, { animalId: this.activeStudyCase.targetAnimalId });
     }
-    
+
     this.lastEvaluation = null;
     AudioFx.success();
     this.store.emit("toast:show", { msg: `🌾 <b>Nuevo Desafío Nutricional:</b> ${this.activeStudyCase.title}` });
@@ -192,15 +192,15 @@ export class NutritionLab {
           <p class="text-sm text-gray-200 m-0">${this.decisionChallenge.prompt}</p>
           <div class="grid gap-2">
             ${this.decisionChallenge.options.map(option => {
-              const selected = this.challengeSelection?.choiceId === option.id;
-              const success = this.challengeSelection && option.correct;
-              const danger = this.challengeSelection && selected && !option.correct;
-              return `
+      const selected = this.challengeSelection?.choiceId === option.id;
+      const success = this.challengeSelection && option.correct;
+      const danger = this.challengeSelection && selected && !option.correct;
+      return `
                 <button data-nutri-decision="${option.id}" class="btn nutrition-decision-btn text-left p-3 rounded-xl border ${success ? 'border-emerald-500/50 bg-emerald-950/30' : danger ? 'border-rose-500/50 bg-rose-950/30' : 'border-white/10 bg-black/30'} ${selected ? 'ring-1 ring-white/20' : ''}">
                   <span class="text-xs text-gray-200">${option.text}</span>
                 </button>
               `;
-            }).join("")}
+    }).join("")}
           </div>
           ${this.challengeSelection ? `
             <div class="p-3 rounded-xl border ${this.challengeSelection.correct ? 'border-emerald-500/40 bg-emerald-950/30 text-emerald-100' : 'border-rose-500/40 bg-rose-950/30 text-rose-100'} text-xs leading-relaxed">
